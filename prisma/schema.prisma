@@ -1,0 +1,61 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Property {
+  id           String         @id @default(cuid())
+  type         PropertyType
+  address      Address?
+  PropertyMeta PropertyMeta[]
+  LookupResult LookupResult[]
+}
+
+model PropertyMeta {
+  id         String   @id @default(cuid())
+  property   Property @relation(fields: [propertyId], references: [id])
+  propertyId String
+  key        String
+  value      String?
+  json       Json?    @db.JsonB
+
+  @@unique([propertyId, key])
+  @@index([propertyId, key])
+}
+
+model LookupResult {
+  id         String   @id @default(cuid())
+  property   Property @relation(fields: [propertyId], references: [id])
+  propertyId String
+  resultType String
+  input      String?
+  json       Json     @db.JsonB
+}
+
+model Address {
+  id          String   @id @default(cuid())
+  propertyId  String   @unique
+  fullAddress String
+  property    Property @relation(fields: [propertyId], references: [id])
+}
+
+model SystemSetting {
+  key   String @unique
+  value Json
+}
+
+enum PropertyType {
+  Residential
+  MultiFamily
+}
