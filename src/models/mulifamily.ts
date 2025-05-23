@@ -228,6 +228,8 @@ export class MulifamilyModel implements ModelAssesment {
           renovation_scope:           meta?.renovation_scope,
           renovation_cost:            meta?.renovation_cost,
           renovation_units_per_month: meta?.renovation_units_per_month,
+          avg_rent: meta?.avg_rent,
+          vacancy: meta?.vacancy,
         }
       },
       stage_4: {

@@ -66,6 +66,10 @@ export class MultifamilyExpenseRatioProvider extends BaseProvider {
       await createPropertyMeta(property.id, key, value)
     }
 
-    return metas
+    return {
+      ...metas,
+      avg_rent: meta.avg_rent,
+      vacancy: meta.vacancy,
+    }
   }
 }

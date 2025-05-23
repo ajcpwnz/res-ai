@@ -231,7 +231,9 @@ export class ResidentialModel implements ModelAssesment {
           expense_rate: meta?.expense_rate,
           expense_rate_type: meta?.expense_rate_type,
           renovation_scope: meta?.renovation_scope,
-          renovation_cost: meta?.renovation_cost
+          renovation_cost: meta?.renovation_cost,
+          avg_rent: meta?.avg_rent,
+          vacancy: meta?.vacancy,
         }
       },
       stage_4: {
