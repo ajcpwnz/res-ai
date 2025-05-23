@@ -1,11 +1,11 @@
 import { BaseProvider } from 'providers/base'
 import { rentcastClient } from 'utils/api/rentcast.ts'
-import { createPropertyMeta, saveLookupResult } from 'utils/db.ts'
+import { createPropertyMeta, saveLookupResults } from 'utils/db.ts'
 
 export class SalesCompProvider extends BaseProvider {
   getData = async () => {
     const { property } = this.model
-    const { meta } = property;
+    const { meta } = property
 
     const address = property.address.fullAddress
 
@@ -24,13 +24,19 @@ export class SalesCompProvider extends BaseProvider {
     }
 
     for (const [key, value] of Object.entries(metas)) {
-      if (!value) continue;
+      if (!value) continue
 
       await createPropertyMeta(property.id, key, value)
     }
 
-    for (const saleComp of Object.values(data.comparables?.slice(0, 5))) {
-      await saveLookupResult(property.id, 'sales_comp', saleComp, address);
+  // ?.filter(row => row.bedrooms === meta.bedrooms)
+    const filteredComps = data.comparables?.slice(0, 5) || []
+
+    await saveLookupResults(property.id, 'sales_comp', filteredComps, address)
+
+    return {
+      avm: metas,
+      comparables: Object.values(data.comparables?.slice(0, 5))
     }
   }
 }

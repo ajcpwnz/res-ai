@@ -1,4 +1,5 @@
 import type { Address, Property as BaseProperty } from 'prisma'
+import type { RenovationScope } from 'providers/types.ts'
 import type { DataSource } from '../providers'
 
 export type StageKey = string;
@@ -14,8 +15,12 @@ export interface ModelAssesmentStage {
   final?: boolean;
 }
 
+type PropertyMeta = {
+  renovation_scope: RenovationScope;
+} & Record<string, any>
+
 export type Property = BaseProperty & {
-  meta: Record<string, any>;
+  meta: PropertyMeta;
 }
 
 export type PropertyDetails = Property & {
@@ -36,6 +41,10 @@ export interface ModelAssesment {
 
   currentStage: StageKey;
   processStage: (stage: StageKey) => Promise<any>;
+  advanceStage: () => Promise<PropertyDetails>;
+  rewindStage: () => Promise<PropertyDetails>;
+  loadState: () => Promise<any>;
+  getReport: () => Promise<Buffer>;
   reload: () => Promise<void>;
 
   meta: Record<string, any>

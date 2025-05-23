@@ -22,7 +22,7 @@ const renovationRates: Record<RenovationScope, number> = {
   [RenovationScope.heavy]: 17000
 }
 
-export class ExpenseRatioProvider extends BaseProvider {
+export class ResidentialExpenseRatioProvider extends BaseProvider {
   getData = async () => {
     const { property } = this.model
     const { meta } = property
@@ -36,7 +36,6 @@ export class ExpenseRatioProvider extends BaseProvider {
     const metas: Record<string, any> = {
       expense_rate: rate?.defaultRate,
       expense_rate_type: `${bedrooms === 1 ? 'SFH' : 'MFH'}, ${rate?.yearLabel} (${formatPercents(rate.rateRange.from)}-${formatPercents(rate.rateRange.to)})`,
-      vacancy: 0.1,
       renovation_scope: RenovationScope.light,
       renovation_cost: renovationRates[RenovationScope.light],
     }
@@ -48,5 +47,7 @@ export class ExpenseRatioProvider extends BaseProvider {
 
       await createPropertyMeta(property.id, key, value)
     }
+
+    return metas
   }
 }

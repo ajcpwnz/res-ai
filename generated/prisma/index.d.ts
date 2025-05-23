@@ -1302,16 +1302,25 @@ export namespace Prisma {
   export type PropertyMinAggregateOutputType = {
     id: string | null
     type: $Enums.PropertyType | null
+    stage: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
   }
 
   export type PropertyMaxAggregateOutputType = {
     id: string | null
     type: $Enums.PropertyType | null
+    stage: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
   }
 
   export type PropertyCountAggregateOutputType = {
     id: number
     type: number
+    stage: number
+    createdAt: number
+    updatedAt: number
     _all: number
   }
 
@@ -1319,16 +1328,25 @@ export namespace Prisma {
   export type PropertyMinAggregateInputType = {
     id?: true
     type?: true
+    stage?: true
+    createdAt?: true
+    updatedAt?: true
   }
 
   export type PropertyMaxAggregateInputType = {
     id?: true
     type?: true
+    stage?: true
+    createdAt?: true
+    updatedAt?: true
   }
 
   export type PropertyCountAggregateInputType = {
     id?: true
     type?: true
+    stage?: true
+    createdAt?: true
+    updatedAt?: true
     _all?: true
   }
 
@@ -1407,6 +1425,9 @@ export namespace Prisma {
   export type PropertyGroupByOutputType = {
     id: string
     type: $Enums.PropertyType
+    stage: string
+    createdAt: Date
+    updatedAt: Date
     _count: PropertyCountAggregateOutputType | null
     _min: PropertyMinAggregateOutputType | null
     _max: PropertyMaxAggregateOutputType | null
@@ -1429,6 +1450,9 @@ export namespace Prisma {
   export type PropertySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     type?: boolean
+    stage?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
     address?: boolean | Property$addressArgs<ExtArgs>
     PropertyMeta?: boolean | Property$PropertyMetaArgs<ExtArgs>
     LookupResult?: boolean | Property$LookupResultArgs<ExtArgs>
@@ -1438,19 +1462,28 @@ export namespace Prisma {
   export type PropertySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     type?: boolean
+    stage?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
   }, ExtArgs["result"]["property"]>
 
   export type PropertySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     type?: boolean
+    stage?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
   }, ExtArgs["result"]["property"]>
 
   export type PropertySelectScalar = {
     id?: boolean
     type?: boolean
+    stage?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
   }
 
-  export type PropertyOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "type", ExtArgs["result"]["property"]>
+  export type PropertyOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "type" | "stage" | "createdAt" | "updatedAt", ExtArgs["result"]["property"]>
   export type PropertyInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     address?: boolean | Property$addressArgs<ExtArgs>
     PropertyMeta?: boolean | Property$PropertyMetaArgs<ExtArgs>
@@ -1470,6 +1503,9 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: string
       type: $Enums.PropertyType
+      stage: string
+      createdAt: Date
+      updatedAt: Date
     }, ExtArgs["result"]["property"]>
     composites: {}
   }
@@ -1898,6 +1934,9 @@ export namespace Prisma {
   interface PropertyFieldRefs {
     readonly id: FieldRef<"Property", 'String'>
     readonly type: FieldRef<"Property", 'PropertyType'>
+    readonly stage: FieldRef<"Property", 'String'>
+    readonly createdAt: FieldRef<"Property", 'DateTime'>
+    readonly updatedAt: FieldRef<"Property", 'DateTime'>
   }
     
 
@@ -6479,7 +6518,10 @@ export namespace Prisma {
 
   export const PropertyScalarFieldEnum: {
     id: 'id',
-    type: 'type'
+    type: 'type',
+    stage: 'stage',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
   };
 
   export type PropertyScalarFieldEnum = (typeof PropertyScalarFieldEnum)[keyof typeof PropertyScalarFieldEnum]
@@ -6606,6 +6648,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'DateTime'
+   */
+  export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
+    
+
+
+  /**
+   * Reference to a field of type 'DateTime[]'
+   */
+  export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Json'
    */
   export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
@@ -6642,6 +6698,9 @@ export namespace Prisma {
     NOT?: PropertyWhereInput | PropertyWhereInput[]
     id?: StringFilter<"Property"> | string
     type?: EnumPropertyTypeFilter<"Property"> | $Enums.PropertyType
+    stage?: StringFilter<"Property"> | string
+    createdAt?: DateTimeFilter<"Property"> | Date | string
+    updatedAt?: DateTimeFilter<"Property"> | Date | string
     address?: XOR<AddressNullableScalarRelationFilter, AddressWhereInput> | null
     PropertyMeta?: PropertyMetaListRelationFilter
     LookupResult?: LookupResultListRelationFilter
@@ -6650,6 +6709,9 @@ export namespace Prisma {
   export type PropertyOrderByWithRelationInput = {
     id?: SortOrder
     type?: SortOrder
+    stage?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
     address?: AddressOrderByWithRelationInput
     PropertyMeta?: PropertyMetaOrderByRelationAggregateInput
     LookupResult?: LookupResultOrderByRelationAggregateInput
@@ -6661,6 +6723,9 @@ export namespace Prisma {
     OR?: PropertyWhereInput[]
     NOT?: PropertyWhereInput | PropertyWhereInput[]
     type?: EnumPropertyTypeFilter<"Property"> | $Enums.PropertyType
+    stage?: StringFilter<"Property"> | string
+    createdAt?: DateTimeFilter<"Property"> | Date | string
+    updatedAt?: DateTimeFilter<"Property"> | Date | string
     address?: XOR<AddressNullableScalarRelationFilter, AddressWhereInput> | null
     PropertyMeta?: PropertyMetaListRelationFilter
     LookupResult?: LookupResultListRelationFilter
@@ -6669,6 +6734,9 @@ export namespace Prisma {
   export type PropertyOrderByWithAggregationInput = {
     id?: SortOrder
     type?: SortOrder
+    stage?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
     _count?: PropertyCountOrderByAggregateInput
     _max?: PropertyMaxOrderByAggregateInput
     _min?: PropertyMinOrderByAggregateInput
@@ -6680,6 +6748,9 @@ export namespace Prisma {
     NOT?: PropertyScalarWhereWithAggregatesInput | PropertyScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Property"> | string
     type?: EnumPropertyTypeWithAggregatesFilter<"Property"> | $Enums.PropertyType
+    stage?: StringWithAggregatesFilter<"Property"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"Property"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Property"> | Date | string
   }
 
   export type PropertyMetaWhereInput = {
@@ -6878,6 +6949,9 @@ export namespace Prisma {
   export type PropertyCreateInput = {
     id?: string
     type: $Enums.PropertyType
+    stage?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
     address?: AddressCreateNestedOneWithoutPropertyInput
     PropertyMeta?: PropertyMetaCreateNestedManyWithoutPropertyInput
     LookupResult?: LookupResultCreateNestedManyWithoutPropertyInput
@@ -6886,6 +6960,9 @@ export namespace Prisma {
   export type PropertyUncheckedCreateInput = {
     id?: string
     type: $Enums.PropertyType
+    stage?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
     address?: AddressUncheckedCreateNestedOneWithoutPropertyInput
     PropertyMeta?: PropertyMetaUncheckedCreateNestedManyWithoutPropertyInput
     LookupResult?: LookupResultUncheckedCreateNestedManyWithoutPropertyInput
@@ -6894,6 +6971,9 @@ export namespace Prisma {
   export type PropertyUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     type?: EnumPropertyTypeFieldUpdateOperationsInput | $Enums.PropertyType
+    stage?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     address?: AddressUpdateOneWithoutPropertyNestedInput
     PropertyMeta?: PropertyMetaUpdateManyWithoutPropertyNestedInput
     LookupResult?: LookupResultUpdateManyWithoutPropertyNestedInput
@@ -6902,6 +6982,9 @@ export namespace Prisma {
   export type PropertyUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     type?: EnumPropertyTypeFieldUpdateOperationsInput | $Enums.PropertyType
+    stage?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     address?: AddressUncheckedUpdateOneWithoutPropertyNestedInput
     PropertyMeta?: PropertyMetaUncheckedUpdateManyWithoutPropertyNestedInput
     LookupResult?: LookupResultUncheckedUpdateManyWithoutPropertyNestedInput
@@ -6910,16 +6993,25 @@ export namespace Prisma {
   export type PropertyCreateManyInput = {
     id?: string
     type: $Enums.PropertyType
+    stage?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type PropertyUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     type?: EnumPropertyTypeFieldUpdateOperationsInput | $Enums.PropertyType
+    stage?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type PropertyUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     type?: EnumPropertyTypeFieldUpdateOperationsInput | $Enums.PropertyType
+    stage?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type PropertyMetaCreateInput = {
@@ -7130,6 +7222,17 @@ export namespace Prisma {
     not?: NestedEnumPropertyTypeFilter<$PrismaModel> | $Enums.PropertyType
   }
 
+  export type DateTimeFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeFilter<$PrismaModel> | Date | string
+  }
+
   export type AddressNullableScalarRelationFilter = {
     is?: AddressWhereInput | null
     isNot?: AddressWhereInput | null
@@ -7158,16 +7261,25 @@ export namespace Prisma {
   export type PropertyCountOrderByAggregateInput = {
     id?: SortOrder
     type?: SortOrder
+    stage?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type PropertyMaxOrderByAggregateInput = {
     id?: SortOrder
     type?: SortOrder
+    stage?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type PropertyMinOrderByAggregateInput = {
     id?: SortOrder
     type?: SortOrder
+    stage?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type StringWithAggregatesFilter<$PrismaModel = never> = {
@@ -7196,6 +7308,20 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumPropertyTypeFilter<$PrismaModel>
     _max?: NestedEnumPropertyTypeFilter<$PrismaModel>
+  }
+
+  export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedDateTimeFilter<$PrismaModel>
+    _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
   export type StringNullableFilter<$PrismaModel = never> = {
@@ -7467,6 +7593,10 @@ export namespace Prisma {
     set?: $Enums.PropertyType
   }
 
+  export type DateTimeFieldUpdateOperationsInput = {
+    set?: Date | string
+  }
+
   export type AddressUpdateOneWithoutPropertyNestedInput = {
     create?: XOR<AddressCreateWithoutPropertyInput, AddressUncheckedCreateWithoutPropertyInput>
     connectOrCreate?: AddressCreateOrConnectWithoutPropertyInput
@@ -7610,6 +7740,17 @@ export namespace Prisma {
     not?: NestedEnumPropertyTypeFilter<$PrismaModel> | $Enums.PropertyType
   }
 
+  export type NestedDateTimeFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeFilter<$PrismaModel> | Date | string
+  }
+
   export type NestedStringWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -7646,6 +7787,20 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumPropertyTypeFilter<$PrismaModel>
     _max?: NestedEnumPropertyTypeFilter<$PrismaModel>
+  }
+
+  export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedDateTimeFilter<$PrismaModel>
+    _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
   export type NestedStringNullableFilter<$PrismaModel = never> = {
@@ -7877,6 +8032,9 @@ export namespace Prisma {
   export type PropertyCreateWithoutPropertyMetaInput = {
     id?: string
     type: $Enums.PropertyType
+    stage?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
     address?: AddressCreateNestedOneWithoutPropertyInput
     LookupResult?: LookupResultCreateNestedManyWithoutPropertyInput
   }
@@ -7884,6 +8042,9 @@ export namespace Prisma {
   export type PropertyUncheckedCreateWithoutPropertyMetaInput = {
     id?: string
     type: $Enums.PropertyType
+    stage?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
     address?: AddressUncheckedCreateNestedOneWithoutPropertyInput
     LookupResult?: LookupResultUncheckedCreateNestedManyWithoutPropertyInput
   }
@@ -7907,6 +8068,9 @@ export namespace Prisma {
   export type PropertyUpdateWithoutPropertyMetaInput = {
     id?: StringFieldUpdateOperationsInput | string
     type?: EnumPropertyTypeFieldUpdateOperationsInput | $Enums.PropertyType
+    stage?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     address?: AddressUpdateOneWithoutPropertyNestedInput
     LookupResult?: LookupResultUpdateManyWithoutPropertyNestedInput
   }
@@ -7914,6 +8078,9 @@ export namespace Prisma {
   export type PropertyUncheckedUpdateWithoutPropertyMetaInput = {
     id?: StringFieldUpdateOperationsInput | string
     type?: EnumPropertyTypeFieldUpdateOperationsInput | $Enums.PropertyType
+    stage?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     address?: AddressUncheckedUpdateOneWithoutPropertyNestedInput
     LookupResult?: LookupResultUncheckedUpdateManyWithoutPropertyNestedInput
   }
@@ -7921,6 +8088,9 @@ export namespace Prisma {
   export type PropertyCreateWithoutLookupResultInput = {
     id?: string
     type: $Enums.PropertyType
+    stage?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
     address?: AddressCreateNestedOneWithoutPropertyInput
     PropertyMeta?: PropertyMetaCreateNestedManyWithoutPropertyInput
   }
@@ -7928,6 +8098,9 @@ export namespace Prisma {
   export type PropertyUncheckedCreateWithoutLookupResultInput = {
     id?: string
     type: $Enums.PropertyType
+    stage?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
     address?: AddressUncheckedCreateNestedOneWithoutPropertyInput
     PropertyMeta?: PropertyMetaUncheckedCreateNestedManyWithoutPropertyInput
   }
@@ -7951,6 +8124,9 @@ export namespace Prisma {
   export type PropertyUpdateWithoutLookupResultInput = {
     id?: StringFieldUpdateOperationsInput | string
     type?: EnumPropertyTypeFieldUpdateOperationsInput | $Enums.PropertyType
+    stage?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     address?: AddressUpdateOneWithoutPropertyNestedInput
     PropertyMeta?: PropertyMetaUpdateManyWithoutPropertyNestedInput
   }
@@ -7958,6 +8134,9 @@ export namespace Prisma {
   export type PropertyUncheckedUpdateWithoutLookupResultInput = {
     id?: StringFieldUpdateOperationsInput | string
     type?: EnumPropertyTypeFieldUpdateOperationsInput | $Enums.PropertyType
+    stage?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     address?: AddressUncheckedUpdateOneWithoutPropertyNestedInput
     PropertyMeta?: PropertyMetaUncheckedUpdateManyWithoutPropertyNestedInput
   }
@@ -7965,6 +8144,9 @@ export namespace Prisma {
   export type PropertyCreateWithoutAddressInput = {
     id?: string
     type: $Enums.PropertyType
+    stage?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
     PropertyMeta?: PropertyMetaCreateNestedManyWithoutPropertyInput
     LookupResult?: LookupResultCreateNestedManyWithoutPropertyInput
   }
@@ -7972,6 +8154,9 @@ export namespace Prisma {
   export type PropertyUncheckedCreateWithoutAddressInput = {
     id?: string
     type: $Enums.PropertyType
+    stage?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
     PropertyMeta?: PropertyMetaUncheckedCreateNestedManyWithoutPropertyInput
     LookupResult?: LookupResultUncheckedCreateNestedManyWithoutPropertyInput
   }
@@ -7995,6 +8180,9 @@ export namespace Prisma {
   export type PropertyUpdateWithoutAddressInput = {
     id?: StringFieldUpdateOperationsInput | string
     type?: EnumPropertyTypeFieldUpdateOperationsInput | $Enums.PropertyType
+    stage?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     PropertyMeta?: PropertyMetaUpdateManyWithoutPropertyNestedInput
     LookupResult?: LookupResultUpdateManyWithoutPropertyNestedInput
   }
@@ -8002,6 +8190,9 @@ export namespace Prisma {
   export type PropertyUncheckedUpdateWithoutAddressInput = {
     id?: StringFieldUpdateOperationsInput | string
     type?: EnumPropertyTypeFieldUpdateOperationsInput | $Enums.PropertyType
+    stage?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     PropertyMeta?: PropertyMetaUncheckedUpdateManyWithoutPropertyNestedInput
     LookupResult?: LookupResultUncheckedUpdateManyWithoutPropertyNestedInput
   }

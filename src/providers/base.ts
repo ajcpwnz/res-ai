@@ -19,5 +19,5 @@ export class BaseProvider implements DataProvider {
     this.model = model as DataProvider['model'];
   }
 
-  getData = async () => {};
+  getData: () => Promise<any>;
 }

@@ -28,7 +28,13 @@ export class FmrProvider extends BaseProvider {
 
       const { data: fmrResult } = await hudClient.get(`data/${fips_code}?year=2025`)
 
-      const [zipCodeMatch] = fmrResult.data.basicdata.filter(row => row.zip_code === zipCode)
+      if(!fmrResult.data.basicdata) {
+        throw new Error(`No FMR data for ${property.address.fullAddress}, details: ${JSON.stringify(fmrResult.data)}`)
+      }
+
+      const zipCodeMatch   = fmrResult.data.basicdata.filter
+        ? fmrResult.data.basicdata.filter(row => row.zip_code === zipCode)[0]
+        : fmrResult.data.basicdata; // handle single object response;
 
       if (zipCodeMatch) {
         const lookupKey = lookupKeys[bedrooms] || lookupKeys.default;
@@ -36,6 +42,10 @@ export class FmrProvider extends BaseProvider {
         const fmrValue = zipCodeMatch[lookupKey];
 
         await createPropertyMeta(property.id, 'fmr', fmrValue);
+
+        return {
+          fmr: fmrValue
+        }
       }
     }
   }

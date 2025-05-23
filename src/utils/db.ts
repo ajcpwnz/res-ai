@@ -31,6 +31,28 @@ export const saveLookupResult = async (propertyId: string, type: string, value: 
     }
   })
 }
+
+export const saveLookupResults = async (propertyId: string, type: string, records: any[], address?: string) => {
+  await prisma.lookupResult.deleteMany({
+    where:{
+      propertyId,
+      resultType: type,
+    }
+  });
+
+  return prisma.lookupResult.createMany({
+    data: records.map((record: any) => {
+      return {
+        propertyId,
+        resultType: type,
+        input: address,
+        json: JSON.stringify(record)
+      }
+    }),
+  })
+}
+
+
 export const getLookupData = async (propertyId: string, type: string)=> {
   const [result] = await prisma.lookupResult.findMany({
     where: {

@@ -1,9 +1,12 @@
 import type { ProviderConstructor } from 'providers/base'
+import { MultifamilyExpenseRatioProvider } from 'providers/multifamilyExpenseRatio'
+import { MultifamilyFinancialProjectionsProvider } from 'providers/multifamilyFinancialProjections'
+import { MultifamilyInvestmentSummaryProvider } from 'providers/multifamilyInvestmentSummary'
+import { ResidentialExpenseRatioProvider } from 'providers/residentialExpenseRatio'
+import { FinancialProjectionsProvider } from 'providers/residentialFinancialProjections'
+import { ResidentialInvestmentSummaryProvider } from 'providers/residentialInvestmentSummary'
 
 import { FloodDataProvider } from './floodData'
-import { InvestmentSummaryProvider } from './investmentSummary'
-import { FinancialProjectionsProvider } from './financialProjections'
-import { ExpenseRatioProvider } from './expenseRatio'
 import { LocalDataProvider } from './localData'
 import { PlacesListProvider } from './placesList'
 import { DemographicsProvider } from './demographics'
@@ -21,9 +24,12 @@ export enum DataSource {
   CensusDemographicsReport = 'CensusDemographicsReport',
   GooglePlacesList = 'GooglePlacesList',
   PerplexityLocalData = 'PerplexityLocalData',
-  DerivedExpenseRatio = 'DerivedExpenseRatio',
-  DerivedFinancialProjections = 'DerivedFinancialProjections',
-  DerivedInvestmentSummary = 'DerivedInvestmentSummary',
+  DerivedResidentialExpenseRatio = 'DerivedResidentialExpenseRatio',
+  DerivedMultifamilyExpenseRatio = 'DerivedMultifamilyExpenseRatio',
+  DerivedResidentialFinancialProjections = 'DerivedResidentialFinancialProjections',
+  DerivedMultifamilyFinancialProjections = 'DerivedMultifamilyFinancialProjections',
+  DerivedResidentialInvestmentSummary = 'DerivedResidentialInvestmentSummary',
+  DerivedMultifamilyInvestmentSummary = 'DerivedMultifamilyInvestmentSummary',
 }
 
 export const providers: Record<DataSource, ProviderConstructor> = {
@@ -35,7 +41,10 @@ export const providers: Record<DataSource, ProviderConstructor> = {
   [DataSource.CensusDemographicsReport]: DemographicsProvider,
   [DataSource.GooglePlacesList]: PlacesListProvider,
   [DataSource.PerplexityLocalData]: LocalDataProvider,
-  [DataSource.DerivedExpenseRatio]: ExpenseRatioProvider,
-  [DataSource.DerivedFinancialProjections]: FinancialProjectionsProvider,
-  [DataSource.DerivedInvestmentSummary]: InvestmentSummaryProvider,
+  [DataSource.DerivedResidentialExpenseRatio]: ResidentialExpenseRatioProvider,
+  [DataSource.DerivedMultifamilyExpenseRatio]: MultifamilyExpenseRatioProvider,
+  [DataSource.DerivedResidentialFinancialProjections]: FinancialProjectionsProvider,
+  [DataSource.DerivedMultifamilyFinancialProjections]: MultifamilyFinancialProjectionsProvider,
+  [DataSource.DerivedResidentialInvestmentSummary]: ResidentialInvestmentSummaryProvider,
+  [DataSource.DerivedMultifamilyInvestmentSummary]: MultifamilyInvestmentSummaryProvider,
 }

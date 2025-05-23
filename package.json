@@ -8,6 +8,9 @@
     "@types/cors": "^2.8.17",
     "prisma": "^6.7.0"
   },
+  "scripts": {
+    "dev": "bun run --hot index.ts"
+  },
   "peerDependencies": {
     "typescript": "^5"
   },
@@ -20,6 +23,10 @@
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "morgan": "^1.10.0",
-    "openai": "^4.96.0"
+    "openai": "^4.96.0",
+    "p-queue": "^8.1.0",
+    "pdf-lib": "^1.17.1",
+    "pdfkit": "^0.17.1",
+    "socket.io": "^4.8.1"
   }
 }

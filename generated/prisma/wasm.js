@@ -122,7 +122,10 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
 
 exports.Prisma.PropertyScalarFieldEnum = {
   id: 'id',
-  type: 'type'
+  type: 'type',
+  stage: 'stage',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.PropertyMetaScalarFieldEnum = {

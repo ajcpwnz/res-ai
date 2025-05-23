@@ -25,8 +25,14 @@ export class FloodDataProvider extends BaseProvider {
 
     const floodZone = data["flood.s_fld_haz_ar"]?.[0]?.fld_zone;
 
+    console.warn('flood zone: ', floodZone);
+
     if(floodZone) {
       await createPropertyMeta(property.id, 'flood_zone', floodZone);
+
+      return {
+        flood_zone: floodZone
+      }
     }
   }
 }

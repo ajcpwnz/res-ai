@@ -1,6 +1,6 @@
 import { BaseProvider } from 'providers/base';
 import { rentcastClient } from 'utils/api/rentcast.ts'
-import { createPropertyMeta, saveLookupResult } from 'utils/db.ts'
+import { createPropertyMeta, saveLookupResults } from 'utils/db.ts'
 
 export class MarketDataProvider extends BaseProvider {
   getData = async () => {
@@ -32,10 +32,13 @@ export class MarketDataProvider extends BaseProvider {
       await createPropertyMeta(property.id, key, value)
     }
 
-    for (const rentComp of Object.values(data.comparables?.slice(0, 5))) {
-      await saveLookupResult(property.id, 'rent_comp', rentComp, address);
+    const filteredComps = data.comparables?.filter(row => row.bedrooms === meta.bedrooms).slice(0, 5)
+
+    await saveLookupResults(property.id, 'rent_comp', filteredComps, address);
+
+    return {
+      marketData: metas,
+      comparables: Object.values(data.comparables?.slice(0, 5))
     }
-
-
   }
 }

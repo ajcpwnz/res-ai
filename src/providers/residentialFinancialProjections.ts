@@ -29,21 +29,23 @@ export class FinancialProjectionsProvider extends BaseProvider {
 
     const { meta } = property
 
-    const rentComps = await prisma.lookupResult.findMany({
+    const saleComps = await prisma.lookupResult.findMany({
       where: {
         propertyId: property.id,
         resultType: 'sales_comp',
       }
     })
 
-    const comps = rentComps.map(row => JSON.parse(row.json))
+    const comps = saleComps.map(row => JSON.parse(row.json))
 
     let compCount = 0
     let total = 0
 
     for (const comp of comps) {
-      total += comp.price / comp.squareFootage
-      compCount += 1
+      if(comp.squareFootage) {
+        total += comp.price / comp.squareFootage
+        compCount += 1
+      }
     }
 
     const pricePerFoot = total / compCount
@@ -53,8 +55,7 @@ export class FinancialProjectionsProvider extends BaseProvider {
 
     const ARV = pricePerFoot * meta.square_footage;
 
-    const renovationRate = meta.renovation_cost;
-
+    const renovationRate = Number(meta.renovation_cost);
     const offer_price = (ARV * 0.75) - renovationRate
 
     const projection = {
@@ -68,5 +69,9 @@ export class FinancialProjectionsProvider extends BaseProvider {
     console.warn('financial projections', projection);
 
     await saveLookupResults(property.id, 'financial_projection', [projection], address);
+
+    return {
+      financial_projection: projection
+    }
   }
 }
