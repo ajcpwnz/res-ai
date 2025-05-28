@@ -136,6 +136,18 @@ exports.Prisma.PropertyMetaScalarFieldEnum = {
   json: 'json'
 };
 
+exports.Prisma.UnitConfigurationScalarFieldEnum = {
+  id: 'id',
+  propertyId: 'propertyId',
+  bedrooms: 'bedrooms',
+  bathrooms: 'bathrooms',
+  quantity: 'quantity',
+  rent_avm: 'rent_avm',
+  rent_high: 'rent_high',
+  rent_low: 'rent_low',
+  fmr: 'fmr'
+};
+
 exports.Prisma.LookupResultScalarFieldEnum = {
   id: 'id',
   propertyId: 'propertyId',
@@ -185,6 +197,7 @@ exports.Prisma.NullsOrder = {
   last: 'last'
 };
 exports.PropertyType = exports.$Enums.PropertyType = {
+  SingleFamily: 'SingleFamily',
   Residential: 'Residential',
   MultiFamily: 'MultiFamily'
 };
@@ -192,6 +205,7 @@ exports.PropertyType = exports.$Enums.PropertyType = {
 exports.Prisma.ModelName = {
   Property: 'Property',
   PropertyMeta: 'PropertyMeta',
+  UnitConfiguration: 'UnitConfiguration',
   LookupResult: 'LookupResult',
   Address: 'Address',
   SystemSetting: 'SystemSetting'

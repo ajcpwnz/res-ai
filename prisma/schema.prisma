@@ -15,14 +15,15 @@ datasource db {
 }
 
 model Property {
-  id           String         @id @default(cuid())
+  id           String              @id @default(cuid())
   type         PropertyType
   address      Address?
-  stage        String         @default("")
+  stage        String              @default("")
   PropertyMeta PropertyMeta[]
   LookupResult LookupResult[]
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
+  units        UnitConfiguration[]
+  createdAt    DateTime            @default(now())
+  updatedAt    DateTime            @updatedAt
 }
 
 model PropertyMeta {
@@ -35,6 +36,23 @@ model PropertyMeta {
 
   @@unique([propertyId, key])
   @@index([propertyId, key])
+}
+
+model UnitConfiguration {
+  id         String   @id @default(cuid())
+  property   Property @relation(fields: [propertyId], references: [id])
+  propertyId String
+
+  bedrooms  Int
+  bathrooms Int
+  quantity  Int
+  rent_avm  Int?
+  rent_high Int?
+  rent_low  Int?
+  fmr       Int?
+
+  @@unique([propertyId, bedrooms, bathrooms])
+  @@index([propertyId])
 }
 
 model LookupResult {
@@ -59,6 +77,7 @@ model SystemSetting {
 }
 
 enum PropertyType {
+  SingleFamily
   Residential
   MultiFamily
 }

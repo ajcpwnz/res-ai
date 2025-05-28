@@ -7,6 +7,7 @@ export type StageKey = string;
 export enum ModelType {
   MultiFamily = 'MultiFamily',
   Residential = 'Residential',
+  SingleFamily = 'SingleFamily',
 }
 
 export interface ModelAssesmentStage {
@@ -27,7 +28,16 @@ export type PropertyDetails = Property & {
   address: Address | null
 }
 
-export type PropertyWithAddress = Property & { address: Address }
+export type PropertyWithAddress = Property & {
+  address: Address
+  units: UnitConfig[]
+}
+
+interface UnitConfig {
+  bedrooms: number;
+  bathrooms: number;
+  quantity: number;
+}
 
 export interface ModelAssesment {
   property: PropertyDetails;
@@ -48,4 +58,5 @@ export interface ModelAssesment {
   reload: () => Promise<void>;
 
   meta: Record<string, any>
+
 }

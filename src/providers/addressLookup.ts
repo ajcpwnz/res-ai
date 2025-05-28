@@ -26,7 +26,7 @@ export class AddressLookupProvider extends BaseProvider {
 
       // console.warn('Valuation data', valuationData)
       const metas: Record<string, any> = {
-        property_type: data.propertyType,
+        rentcast_property_type: data.propertyType,
         bedrooms: data.bedrooms,
         bathrooms: data.bathrooms,
         square_footage: data.squareFootage,
@@ -46,7 +46,10 @@ export class AddressLookupProvider extends BaseProvider {
 
       await saveLookupResult(property.id, 'address_lookup', data, address);
 
-      return metas;
+      return {
+        ...metas,
+        units: property.units
+      };
     } catch (e) {
       throw new Error(`Empty Rentcast response`)
     }

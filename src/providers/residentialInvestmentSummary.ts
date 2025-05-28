@@ -1,4 +1,3 @@
-// providers/ResidentialInvestmentSummaryProvider.ts
 import PDFDocument from 'pdfkit'
 import { PrismaClient } from 'prisma'
 import { formatPercents, formatMoney } from 'utils/number.ts'
@@ -18,6 +17,7 @@ export class ResidentialInvestmentSummaryProvider {
       doc.on('error', reject)
     })
 
+    // Stage 1: Physical Characteristics
     doc.font('Helvetica')
     doc.fontSize(20).text('Stage 1').moveDown()
     doc.fontSize(16).text('Physical Characteristics').moveDown()
@@ -29,49 +29,49 @@ export class ResidentialInvestmentSummaryProvider {
         ['Property type', property.type],
         ['Year built', property.meta.year_built],
         ['Square footage', property.meta.square_footage],
-        ['Lot size (square ft.)', property.meta.lot_size_sqft],
+        ['Lot size (sq ft)', property.meta.lot_size_sqft],
         ['Bedrooms', property.meta.bedrooms],
         ['Bathrooms', property.meta.bathrooms],
         ['Flood Zone', property.meta.flood_zone],
       ],
     })
     doc.moveDown()
-    doc.fontSize(16).text('Financial Details').moveDown()
-    doc.fontSize(8)
-    doc.table({
-      rowStyles: i => i < 1 ? { border: [0, 0, 1, 0] } : { border: false },
-      data: [
-        ['Feature', 'Value'],
-        ['Assessed value', formatMoney(property.meta.assessed_value)],
-        ['Annual property taxes', formatMoney(property.meta.annual_property_tax)],
-        ['AVM value', formatMoney(property.meta.avm_value)],
-      ],
-    })
-    doc.moveDown()
+
+    // Stage 2: Rent Estimates per Unit Type
     doc.fontSize(20).text('Stage 2').moveDown()
     doc.fontSize(16).text('Rent Estimates').moveDown()
     doc.fontSize(8)
+    const rentData = await prisma.lookupResult.findFirst({
+      where: { propertyId: property.id, resultType: 'financial_projection' },
+    }).then(r => JSON.parse(r?.json || '{}')).then(fp => fp.rentData || [])
+
     doc.table({
+      columnStyles: { 0: { width: 100 }, 1: { width: 100 }, 2: { width: 100 } },
       rowStyles: i => i < 1 ? { border: [0, 0, 1, 0] } : { border: false },
       data: [
-        ['Feature', 'Value'],
-        ['Market rent (based on comps)', formatMoney(property.meta.avg_rent)],
-        ['HUD FMR', formatMoney(property.meta.fmr)],
+        ['Unit Type', 'Market rent/mo', 'HUD FMR/mo'],
+        ...rentData.map((rd: any) => [
+          `${rd.unit.quantity}×${rd.unit.bedrooms}BR, ${rd.unit.bathrooms}BA`,
+          formatMoney(rd.marketNOI ? (rd.marketNOI.EGI / MONTHS / rd.unit.quantity) : 0),
+          formatMoney(rd.fmrNOI ? (rd.fmrNOI.EGI / MONTHS / rd.unit.quantity) : 0),
+        ]),
       ],
     })
     doc.moveDown()
-    const rentComps = await prisma.lookupResult.findMany({
+
+    // Sales Comparables
+    doc.fontSize(16).text('Sales Comparables').moveDown()
+    const saleComps = await prisma.lookupResult.findMany({
       where: { propertyId: property.id, resultType: 'sales_comp' },
     })
-    const comps = rentComps.map(r => JSON.parse(r.json))
-    doc.fontSize(16).text('Sales Comparables')
+    const comps = saleComps.map(r => JSON.parse(r.json))
     doc.fontSize(8)
     doc.table({
-      columnStyles: [200, '*', '*', '*', '*', '*', '*', '*'],
+      columnStyles: [150, 80, 40, 40, 50, 60, 40],
       rowStyles: i => i < 1 ? { border: [0, 0, 1, 0] } : { border: false },
       data: [
         ['Address', 'Price', 'Beds', 'Baths', 'Sq Ft', 'Sold date', 'Distance'],
-        ...comps.map(r => [
+        ...comps.map((r: any) => [
           r.formattedAddress,
           formatMoney(r.price),
           r.bedrooms,
@@ -83,41 +83,44 @@ export class ResidentialInvestmentSummaryProvider {
       ],
     })
     doc.moveDown()
+
+    // Demographics
+    doc.fontSize(16).text('Demographics').moveDown()
     const demographicsRecord = await prisma.lookupResult.findFirst({
       where: { propertyId: property.id, resultType: 'demographics_data' },
     })
     const demographicsData = JSON.parse(demographicsRecord?.json || '{}')
-    doc.fontSize(16).text('Demographics')
     doc.fontSize(8)
     doc.table({
-      columnStyles: [200, '*'],
+      columnStyles: { 0: 150, 1: 300 },
       rowStyles: i => i < 1 ? { border: [0, 0, 1, 0] } : { border: false },
       data: [
         ['Metric', 'Value'],
         ['Median Household Income', formatMoney(demographicsData.medianIncome)],
         ['Population (Est.)', demographicsData.totalPopulation],
-        ['Race Breakdown:', ''],
-        ['- Black African American', formatPercents(demographicsData.blackPopulation, demographicsData.totalPopulation)],
-        ['- White (Non-Hispanic)', formatPercents(demographicsData.whitePopulation, demographicsData.totalPopulation)],
-        ['- Hispanic/Latino', formatPercents(demographicsData.latinoPopulation, demographicsData.totalPopulation)],
-        ['Owner-Occupied Housing', formatPercents(demographicsData.housingUnits - demographicsData.renterUnits, demographicsData.housingUnits)],
-        ['Renter-Occupied', formatPercents(demographicsData.renterUnits, demographicsData.housingUnits)],
+        ['Black or African American (%)', formatPercents(demographicsData.blackPopulation, demographicsData.totalPopulation)],
+        ['White (Non-Hispanic) (%)', formatPercents(demographicsData.whitePopulation, demographicsData.totalPopulation)],
+        ['Hispanic/Latino (%)', formatPercents(demographicsData.latinoPopulation, demographicsData.totalPopulation)],
+        ['Owner-Occupied (%)', formatPercents(demographicsData.housingUnits - demographicsData.renterUnits, demographicsData.housingUnits)],
+        ['Renter-Occupied (%)', formatPercents(demographicsData.renterUnits, demographicsData.housingUnits)],
       ],
     })
     doc.moveDown()
+
+    // Related Places
+    doc.fontSize(16).text('Institutional Anchors').moveDown()
     const relatedPlaces = await prisma.lookupResult.findMany({
       where: { propertyId: property.id, resultType: 'related_place' },
       take: 6,
     })
     const places = relatedPlaces.map(r => JSON.parse(r.json))
-    doc.fontSize(16).text('Institutional Anchors')
     doc.fontSize(8)
     doc.table({
-      columnStyles: [120, 270, 45, '*'],
+      columnStyles: [80, 200, 50, 50],
       rowStyles: i => i < 1 ? { border: [0, 0, 1, 0] } : { border: false },
       data: [
-        ['Type', 'Name', 'Distance', 'Size'],
-        ...places.map(r => [
+        ['Type', 'Name & Address', 'Distance', 'Size'],
+        ...places.map((r: any) => [
           r.type,
           `${r.name.text}\n${r.formattedAddress}\n${r.info}`,
           r.distance.toFixed(2),
@@ -126,56 +129,74 @@ export class ResidentialInvestmentSummaryProvider {
       ],
     })
     doc.moveDown()
+
+    // Local Data Trends
+    doc.fontSize(16).text('Financial Trends').moveDown()
     const localDataRecord = await prisma.lookupResult.findFirst({
       where: { propertyId: property.id, resultType: 'local_data' },
     })
     const localData = JSON.parse(localDataRecord?.json || '{}')
-    doc.fontSize(16).text('Financial trends')
     doc.fontSize(8).text(localData.economicDevelopment || 'N/A').moveDown(2)
-    doc.fontSize(20).text('Stage 3: Underwriting Assumptions Summary')
-    doc.fontSize(8).text(`Property: ${property.address.fullAddress}`)
-    doc.fontSize(8).text(`Type: ${property.type} | Year Built: ${property.meta.year_built} | Sq. Ft. ${property.meta.square_footage}`).moveDown()
-    doc.fontSize(16).text('Income Assumptions')
-    doc.fontSize(8).text(`Market rent: ${formatMoney(property.meta.avg_rent)}`)
-    doc.fontSize(8).text(`HUD Rent: ${formatMoney(property.meta.fmr)}`)
-    doc.fontSize(8).text(`Vacancy rate: ${formatPercents(property.meta.vacancy)}`).moveDown(2)
-    doc.fontSize(16).text('Expense Assumptions')
-    doc.fontSize(8).text(`Expense Ratio Range: ${property.meta.expense_rate_type}`)
-    doc.fontSize(8).text(`Used: ${formatPercents(property.meta.expense_rate)}`).moveDown(2)
-    doc.fontSize(16).text('Renovation')
-    doc.fontSize(8).text(`Scope: ${property.meta.renovation_scope}`)
-    doc.fontSize(8).text(`Estimated cost: ${formatMoney(property.meta.renovation_cost)}`).moveDown(2)
-    doc.fontSize(20).text('Stage 4: Stabilized NOI & Offer Price').moveDown()
+
+    // Stage 4: Summary of Income & Offer Price
+    doc.fontSize(20).text('Stage 4: Income & Offer Price').moveDown()
     const projectionRecord = await prisma.lookupResult.findFirst({
       where: { propertyId: property.id, resultType: 'financial_projection' },
     })
     const financialProjection = JSON.parse(projectionRecord?.json || '{}')
-    doc.fontSize(16).text('Income, Expenses & NOI Summary')
+
+    // Market NOI by unit
+    doc.fontSize(16).text('Market Scenario: Income, Expenses & NOI').moveDown()
     doc.fontSize(8)
     doc.table({
-      columnStyles: ['*', '*', '*', '*', '*'],
+      columnStyles: { 0: 100, 1: 80, 2: 80, 3: 80, 4: 80 },
       rowStyles: i => i < 1 ? { border: [0, 0, 1, 0] } : { border: false },
       data: [
-        ['Scenario', 'Rent/mo', 'EGI', `Expenses (${formatPercents(property.meta.expense_rate)})`, 'NOI'],
-        ['Market', formatMoney(property.meta.avg_rent), formatMoney(financialProjection.marketNOI.EGI), formatMoney(financialProjection.marketNOI.expenses), formatMoney(financialProjection.marketNOI.NOI)],
-        ['HUD', formatMoney(property.meta.fmr), formatMoney(financialProjection.fmrNOI.EGI), formatMoney(financialProjection.fmrNOI.expenses), formatMoney(financialProjection.fmrNOI.NOI)],
+        ['Unit Type', 'Rent/mo', 'EGI', `Expenses (${formatPercents(property.meta.expense_rate)})`, 'NOI'],
+        ...financialProjection.rentData.map((rd: any) => [
+          `${rd.unit.quantity}×${rd.unit.bedrooms}BR`,
+          formatMoney(rd.marketNOI.EGI / MONTHS / rd.unit.quantity),
+          formatMoney(rd.marketNOI.EGI),
+          formatMoney(rd.marketNOI.expenses),
+          formatMoney(rd.marketNOI.NOI),
+        ]),
       ],
     })
     doc.moveDown()
-    doc.fontSize(16).text('ARV & Offer Price')
+
+    // HUD/FMR NOI by unit
+    doc.fontSize(16).text('HUD Scenario: Income, Expenses & NOI').moveDown()
     doc.fontSize(8)
     doc.table({
-      columnStyles: [270, '*'],
+      columnStyles: { 0: 100, 1: 80, 2: 80, 3: 80, 4: 80 },
+      rowStyles: i => i < 1 ? { border: [0, 0, 1, 0] } : { border: false },
+      data: [
+        ['Unit Type', 'Rent/mo', 'EGI', `Expenses (${formatPercents(property.meta.expense_rate)})`, 'NOI'],
+        ...financialProjection.rentData.map((rd: any) => [
+          `${rd.unit.quantity}×${rd.unit.bedrooms}BR`,
+          formatMoney(rd.fmrNOI.EGI / MONTHS / rd.unit.quantity),
+          formatMoney(rd.fmrNOI.EGI),
+          formatMoney(rd.fmrNOI.expenses),
+          formatMoney(rd.fmrNOI.NOI),
+        ]),
+      ],
+    })
+    doc.moveDown()
+
+    // ARV & Offer Price
+    doc.fontSize(16).text('ARV & Offer Price').moveDown()
+    doc.fontSize(8)
+    doc.table({
+      columnStyles: { 0: 200, 1: 100 },
       rowStyles: i => i < 1 ? { border: [0, 0, 1, 0] } : { border: false },
       data: [
         ['Metric', 'Value'],
-        [`ARV $${financialProjection.pricePerFoot} * ${property.meta.square_footage}`, formatMoney(financialProjection.ARV)],
-        [`Offer value (ARV × 0.75) - $${property.meta.renovation_cost}`, formatMoney(financialProjection.offer_price)],
+        [`ARV = $${formatMoney(financialProjection.pricePerFoot)} × ${property.meta.square_footage}`, formatMoney(financialProjection.ARV)],
+        [`Offer price (ARV × 0.75) - $${formatMoney(property.meta.renovation_cost)}`, formatMoney(financialProjection.offer_price)],
       ],
     })
-    doc.moveDown()
-    doc.end()
 
+    doc.end()
     return endPromise
   }
 }

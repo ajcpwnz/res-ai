@@ -27,7 +27,6 @@ const defaultStages = {
       DataSource.RentCastMarketData,
       DataSource.RentCastSalesComp,
       DataSource.FloodData,
-      DataSource.HUDFmr,
       DataSource.CensusDemographicsReport,
       DataSource.GooglePlacesList,
       DataSource.PerplexityLocalData
@@ -183,15 +182,14 @@ export class ResidentialModel implements ModelAssesment {
           annual_property_tax: meta?.annual_property_tax,
           zip_code: meta?.zip_code,
           unit_count: meta?.unit_count,
+          last_sold_date: meta?.last_sold_date,
+          last_sold_price: meta?.last_sold_price,
+          units: this.property.units
         }
       },
       stage_2: {
         [DataSource.RentCastMarketData]: {
-          marketData: {
-            avg_rent: meta?.avg_rent,
-            rent_low: meta?.rent_low,
-            rent_high: meta?.rent_high,
-          },
+          marketData: this.property.units,
           comparables: lookupResults
             .filter(row => row.resultType === 'rent_comp')
             .map(row => tryParseJson(row))
@@ -208,9 +206,6 @@ export class ResidentialModel implements ModelAssesment {
         },
         [DataSource.FloodData]: {
           flood_zone: meta?.flood_zone
-        },
-        [DataSource.HUDFmr]: {
-          fmr: meta?.fmr
         },
         [DataSource.CensusDemographicsReport]: {
           demographics_data: findJson('demographics_data')
@@ -234,6 +229,7 @@ export class ResidentialModel implements ModelAssesment {
           renovation_cost: meta?.renovation_cost,
           avg_rent: meta?.avg_rent,
           vacancy: meta?.vacancy,
+          units: this.property.units
         }
       },
       stage_4: {

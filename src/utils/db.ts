@@ -1,6 +1,7 @@
 import { json } from 'express'
-import {PrismaClient} from 'prisma'
-const prisma = new PrismaClient();
+import { PrismaClient } from 'prisma'
+
+const prisma = new PrismaClient()
 
 export const createPropertyMeta = async (propertyId: string, key: string, value: any, json?: any) => {
   return prisma.propertyMeta.upsert({
@@ -21,6 +22,21 @@ export const createPropertyMeta = async (propertyId: string, key: string, value:
 }
 
 
+export const updateUnitConfig = async (id: string, rent_low: number, rent_high: number, rent_avm: number, fmr: number) => {
+  return prisma.unitConfiguration.update({
+    where: {
+      id
+    },
+    data: {
+      rent_avm,
+      rent_high,
+      rent_low,
+      fmr
+    },
+  })
+}
+
+
 export const saveLookupResult = async (propertyId: string, type: string, value: any, address?: string) => {
   return prisma.lookupResult.create({
     data: {
@@ -34,11 +50,11 @@ export const saveLookupResult = async (propertyId: string, type: string, value: 
 
 export const saveLookupResults = async (propertyId: string, type: string, records: any[], address?: string) => {
   await prisma.lookupResult.deleteMany({
-    where:{
+    where: {
       propertyId,
       resultType: type,
     }
-  });
+  })
 
   return prisma.lookupResult.createMany({
     data: records.map((record: any) => {
@@ -53,30 +69,29 @@ export const saveLookupResults = async (propertyId: string, type: string, record
 }
 
 
-export const getLookupData = async (propertyId: string, type: string)=> {
+export const getLookupData = async (propertyId: string, type: string) => {
   const [result] = await prisma.lookupResult.findMany({
     where: {
       propertyId,
       resultType: type,
     }
-  });
+  })
 
-  return JSON.parse(result.json);
+  return JSON.parse(result.json)
 }
 
 
-
-export const loadProperty = async (id: string)=> {
+export const loadProperty = async (id: string) => {
   const dbProperty = await prisma.property.findUnique({
     where: { id },
-    include: {address: true, PropertyMeta: true}
-  });
+    include: { address: true, PropertyMeta: true, units: true }
+  })
 
-  const { PropertyMeta, ...baseFields} = dbProperty;
+  const { PropertyMeta, ...baseFields } = dbProperty
 
   const meta = PropertyMeta.reduce<Record<string, any>>((metas, rec) => {
-    metas[rec.key] = rec.value;
-    return metas;
+    metas[rec.key] = rec.value
+    return metas
   }, {})
 
   return {

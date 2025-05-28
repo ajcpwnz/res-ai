@@ -52,6 +52,7 @@ export class ResidentialExpenseRatioProvider extends BaseProvider {
       ...metas,
       avg_rent: meta.avg_rent,
       vacancy: meta.vacancy,
+      units: this.model.property.units,
     }
   }
 }

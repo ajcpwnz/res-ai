@@ -29,55 +29,123 @@ router.get('/:id', async (req, res) => {
 
 router.post('/', async (req, res) => {
   const {
-    type, address, unit_count
-  } = req.body
+    type,
+    address,
+    last_sold_date,
+    last_sold_price,
+    unit_count,
+    units,
+  } = req.body;
 
   try {
-    const Model = matchModel(type)
+    const Model = matchModel(type);
 
-    const property = await prisma.property.create({
+    const createPayload = {
       data: {
         type,
         stage: Model.defaultStage,
         address: {
-          create: {
-            fullAddress: address
-          }
+          create: { fullAddress: address },
         },
       },
-      include:
-        {
-          address: true,
-        }
-    });
+      include: {
+        address: true,
+        units: true,
+      },
+    }
 
-    await createPropertyMeta(property.id, 'unit_count', unit_count);
+    if(type === 'MultiFamily') {
+      createPayload.data.units = {
+        create: units.map((u: any) => ({
+          bedrooms: u.bedrooms,
+          bathrooms: u.bathrooms,
+          quantity: u.quantity,
+        }))
+      }
+    }
 
-    res.json({ property })
+    const property = await prisma.property.create(createPayload);
+
+    if (last_sold_date) {
+      await createPropertyMeta(property.id, 'last_sold_date', last_sold_date);
+    }
+    if (last_sold_price) {
+      await createPropertyMeta(property.id, 'last_sold_price', last_sold_price);
+    }
+
+    if(type === 'SingleFamily') {
+      await createPropertyMeta(property.id, 'unit_count', 1);
+    } else {
+      await createPropertyMeta(property.id, 'unit_count', unit_count);
+    }
+
+    return res.json({ property });
   } catch (error) {
-    res.status(500)
+    console.error(error);
+    return res.status(500).json({ error: 'Could not create property' });
   }
-})
+});
 
 
-router.put(`/:id`, async (req, res) => {
+router.put('/:id', async (req, res) => {
+  const { id } = req.params
+  const { units, update_units, ...metas } = req.body
+
   try {
-    const { id } = req.params
+    const property = await loadProperty(id)
 
-    const metas = req.body
-
+    // TODO: do batch update;
     for (const [key, value] of Object.entries(metas)) {
-      if (!value) continue
-
+      if (value == null || value === '') continue
       await createPropertyMeta(id, key, value)
     }
 
-    console.warn('aaaaa')
+
+    if(update_units?.length) {
+      const updates = update_units.map((u: any) => {
+        const { id: unitId, ...data } = u
+        return prisma.unitConfiguration.update({
+          where: { id: unitId },
+          data,
+        })
+      })
+
+      await prisma.$transaction(updates)
+    } else if (property.type ===  'MultiFamily' && Array.isArray(units)) {
+      await prisma.unitConfiguration.deleteMany({
+        where: { propertyId: id }
+      })
+
+      if (units.length > 0) {
+        await prisma.unitConfiguration.createMany({
+          data: units.map((u: any) => ({
+            propertyId: id,
+            bedrooms: u.bedrooms,
+            bathrooms: u.bathrooms,
+            quantity: u.quantity,
+          }))
+        })
+      }
+    } else {
+      const unit_count = property.type === 'Residential' ? metas.unit_count : 1
+
+      await prisma.unitConfiguration.create({
+        data: {
+          propertyId: id,
+          bedrooms: Number(metas.bedrooms),
+          bathrooms: Number(metas.bathrooms),
+          quantity: unit_count
+        }
+      })
+    }
+
     return res.status(200).json({ success: true })
   } catch (error) {
-    res.status(500)
+    console.error(error)
+    return res.status(500).json({ error: 'Could not update property' })
   }
 })
+
 
 
 router.post(`/:id/process`, async (req, res) => {

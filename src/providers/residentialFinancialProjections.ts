@@ -50,8 +50,18 @@ export class FinancialProjectionsProvider extends BaseProvider {
 
     const pricePerFoot = total / compCount
 
-    const marketNOI = this.getNOIValues(meta.avg_rent)
-    const fmrNOI = this.getNOIValues(meta.fmr)
+    const rentData = [];
+
+    for (const unit of property.units) {
+      const marketNOI = this.getNOIValues(unit.rent_avm)
+      const fmrNOI = this.getNOIValues(unit.fmr)
+
+      rentData.push({
+        unit,
+        marketNOI,
+        fmrNOI,
+      })
+    }
 
     const ARV = pricePerFoot * meta.square_footage;
 
@@ -60,8 +70,7 @@ export class FinancialProjectionsProvider extends BaseProvider {
 
     const projection = {
       pricePerFoot,
-      marketNOI,
-      fmrNOI,
+      rentData,
       ARV,
       offer_price,
     }

@@ -24,6 +24,11 @@ export type Property = $Result.DefaultSelection<Prisma.$PropertyPayload>
  */
 export type PropertyMeta = $Result.DefaultSelection<Prisma.$PropertyMetaPayload>
 /**
+ * Model UnitConfiguration
+ * 
+ */
+export type UnitConfiguration = $Result.DefaultSelection<Prisma.$UnitConfigurationPayload>
+/**
  * Model LookupResult
  * 
  */
@@ -44,6 +49,7 @@ export type SystemSetting = $Result.DefaultSelection<Prisma.$SystemSettingPayloa
  */
 export namespace $Enums {
   export const PropertyType: {
+  SingleFamily: 'SingleFamily',
   Residential: 'Residential',
   MultiFamily: 'MultiFamily'
 };
@@ -200,6 +206,16 @@ export class PrismaClient<
     * ```
     */
   get propertyMeta(): Prisma.PropertyMetaDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.unitConfiguration`: Exposes CRUD operations for the **UnitConfiguration** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more UnitConfigurations
+    * const unitConfigurations = await prisma.unitConfiguration.findMany()
+    * ```
+    */
+  get unitConfiguration(): Prisma.UnitConfigurationDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.lookupResult`: Exposes CRUD operations for the **LookupResult** model.
@@ -672,6 +688,7 @@ export namespace Prisma {
   export const ModelName: {
     Property: 'Property',
     PropertyMeta: 'PropertyMeta',
+    UnitConfiguration: 'UnitConfiguration',
     LookupResult: 'LookupResult',
     Address: 'Address',
     SystemSetting: 'SystemSetting'
@@ -693,7 +710,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "property" | "propertyMeta" | "lookupResult" | "address" | "systemSetting"
+      modelProps: "property" | "propertyMeta" | "unitConfiguration" | "lookupResult" | "address" | "systemSetting"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -842,6 +859,80 @@ export namespace Prisma {
           count: {
             args: Prisma.PropertyMetaCountArgs<ExtArgs>
             result: $Utils.Optional<PropertyMetaCountAggregateOutputType> | number
+          }
+        }
+      }
+      UnitConfiguration: {
+        payload: Prisma.$UnitConfigurationPayload<ExtArgs>
+        fields: Prisma.UnitConfigurationFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.UnitConfigurationFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UnitConfigurationPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.UnitConfigurationFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UnitConfigurationPayload>
+          }
+          findFirst: {
+            args: Prisma.UnitConfigurationFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UnitConfigurationPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.UnitConfigurationFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UnitConfigurationPayload>
+          }
+          findMany: {
+            args: Prisma.UnitConfigurationFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UnitConfigurationPayload>[]
+          }
+          create: {
+            args: Prisma.UnitConfigurationCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UnitConfigurationPayload>
+          }
+          createMany: {
+            args: Prisma.UnitConfigurationCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.UnitConfigurationCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UnitConfigurationPayload>[]
+          }
+          delete: {
+            args: Prisma.UnitConfigurationDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UnitConfigurationPayload>
+          }
+          update: {
+            args: Prisma.UnitConfigurationUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UnitConfigurationPayload>
+          }
+          deleteMany: {
+            args: Prisma.UnitConfigurationDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.UnitConfigurationUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.UnitConfigurationUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UnitConfigurationPayload>[]
+          }
+          upsert: {
+            args: Prisma.UnitConfigurationUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UnitConfigurationPayload>
+          }
+          aggregate: {
+            args: Prisma.UnitConfigurationAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateUnitConfiguration>
+          }
+          groupBy: {
+            args: Prisma.UnitConfigurationGroupByArgs<ExtArgs>
+            result: $Utils.Optional<UnitConfigurationGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.UnitConfigurationCountArgs<ExtArgs>
+            result: $Utils.Optional<UnitConfigurationCountAggregateOutputType> | number
           }
         }
       }
@@ -1153,6 +1244,7 @@ export namespace Prisma {
   export type GlobalOmitConfig = {
     property?: PropertyOmit
     propertyMeta?: PropertyMetaOmit
+    unitConfiguration?: UnitConfigurationOmit
     lookupResult?: LookupResultOmit
     address?: AddressOmit
     systemSetting?: SystemSettingOmit
@@ -1252,11 +1344,13 @@ export namespace Prisma {
   export type PropertyCountOutputType = {
     PropertyMeta: number
     LookupResult: number
+    units: number
   }
 
   export type PropertyCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     PropertyMeta?: boolean | PropertyCountOutputTypeCountPropertyMetaArgs
     LookupResult?: boolean | PropertyCountOutputTypeCountLookupResultArgs
+    units?: boolean | PropertyCountOutputTypeCountUnitsArgs
   }
 
   // Custom InputTypes
@@ -1282,6 +1376,13 @@ export namespace Prisma {
    */
   export type PropertyCountOutputTypeCountLookupResultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: LookupResultWhereInput
+  }
+
+  /**
+   * PropertyCountOutputType without action
+   */
+  export type PropertyCountOutputTypeCountUnitsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UnitConfigurationWhereInput
   }
 
 
@@ -1456,6 +1557,7 @@ export namespace Prisma {
     address?: boolean | Property$addressArgs<ExtArgs>
     PropertyMeta?: boolean | Property$PropertyMetaArgs<ExtArgs>
     LookupResult?: boolean | Property$LookupResultArgs<ExtArgs>
+    units?: boolean | Property$unitsArgs<ExtArgs>
     _count?: boolean | PropertyCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["property"]>
 
@@ -1488,6 +1590,7 @@ export namespace Prisma {
     address?: boolean | Property$addressArgs<ExtArgs>
     PropertyMeta?: boolean | Property$PropertyMetaArgs<ExtArgs>
     LookupResult?: boolean | Property$LookupResultArgs<ExtArgs>
+    units?: boolean | Property$unitsArgs<ExtArgs>
     _count?: boolean | PropertyCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type PropertyIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -1499,6 +1602,7 @@ export namespace Prisma {
       address: Prisma.$AddressPayload<ExtArgs> | null
       PropertyMeta: Prisma.$PropertyMetaPayload<ExtArgs>[]
       LookupResult: Prisma.$LookupResultPayload<ExtArgs>[]
+      units: Prisma.$UnitConfigurationPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -1903,6 +2007,7 @@ export namespace Prisma {
     address<T extends Property$addressArgs<ExtArgs> = {}>(args?: Subset<T, Property$addressArgs<ExtArgs>>): Prisma__AddressClient<$Result.GetResult<Prisma.$AddressPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     PropertyMeta<T extends Property$PropertyMetaArgs<ExtArgs> = {}>(args?: Subset<T, Property$PropertyMetaArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PropertyMetaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     LookupResult<T extends Property$LookupResultArgs<ExtArgs> = {}>(args?: Subset<T, Property$LookupResultArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LookupResultPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    units<T extends Property$unitsArgs<ExtArgs> = {}>(args?: Subset<T, Property$unitsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UnitConfigurationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2389,6 +2494,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: LookupResultScalarFieldEnum | LookupResultScalarFieldEnum[]
+  }
+
+  /**
+   * Property.units
+   */
+  export type Property$unitsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UnitConfiguration
+     */
+    select?: UnitConfigurationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UnitConfiguration
+     */
+    omit?: UnitConfigurationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UnitConfigurationInclude<ExtArgs> | null
+    where?: UnitConfigurationWhereInput
+    orderBy?: UnitConfigurationOrderByWithRelationInput | UnitConfigurationOrderByWithRelationInput[]
+    cursor?: UnitConfigurationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: UnitConfigurationScalarFieldEnum | UnitConfigurationScalarFieldEnum[]
   }
 
   /**
@@ -3461,6 +3590,1174 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: PropertyMetaInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model UnitConfiguration
+   */
+
+  export type AggregateUnitConfiguration = {
+    _count: UnitConfigurationCountAggregateOutputType | null
+    _avg: UnitConfigurationAvgAggregateOutputType | null
+    _sum: UnitConfigurationSumAggregateOutputType | null
+    _min: UnitConfigurationMinAggregateOutputType | null
+    _max: UnitConfigurationMaxAggregateOutputType | null
+  }
+
+  export type UnitConfigurationAvgAggregateOutputType = {
+    bedrooms: number | null
+    bathrooms: number | null
+    quantity: number | null
+    rent_avm: number | null
+    rent_high: number | null
+    rent_low: number | null
+    fmr: number | null
+  }
+
+  export type UnitConfigurationSumAggregateOutputType = {
+    bedrooms: number | null
+    bathrooms: number | null
+    quantity: number | null
+    rent_avm: number | null
+    rent_high: number | null
+    rent_low: number | null
+    fmr: number | null
+  }
+
+  export type UnitConfigurationMinAggregateOutputType = {
+    id: string | null
+    propertyId: string | null
+    bedrooms: number | null
+    bathrooms: number | null
+    quantity: number | null
+    rent_avm: number | null
+    rent_high: number | null
+    rent_low: number | null
+    fmr: number | null
+  }
+
+  export type UnitConfigurationMaxAggregateOutputType = {
+    id: string | null
+    propertyId: string | null
+    bedrooms: number | null
+    bathrooms: number | null
+    quantity: number | null
+    rent_avm: number | null
+    rent_high: number | null
+    rent_low: number | null
+    fmr: number | null
+  }
+
+  export type UnitConfigurationCountAggregateOutputType = {
+    id: number
+    propertyId: number
+    bedrooms: number
+    bathrooms: number
+    quantity: number
+    rent_avm: number
+    rent_high: number
+    rent_low: number
+    fmr: number
+    _all: number
+  }
+
+
+  export type UnitConfigurationAvgAggregateInputType = {
+    bedrooms?: true
+    bathrooms?: true
+    quantity?: true
+    rent_avm?: true
+    rent_high?: true
+    rent_low?: true
+    fmr?: true
+  }
+
+  export type UnitConfigurationSumAggregateInputType = {
+    bedrooms?: true
+    bathrooms?: true
+    quantity?: true
+    rent_avm?: true
+    rent_high?: true
+    rent_low?: true
+    fmr?: true
+  }
+
+  export type UnitConfigurationMinAggregateInputType = {
+    id?: true
+    propertyId?: true
+    bedrooms?: true
+    bathrooms?: true
+    quantity?: true
+    rent_avm?: true
+    rent_high?: true
+    rent_low?: true
+    fmr?: true
+  }
+
+  export type UnitConfigurationMaxAggregateInputType = {
+    id?: true
+    propertyId?: true
+    bedrooms?: true
+    bathrooms?: true
+    quantity?: true
+    rent_avm?: true
+    rent_high?: true
+    rent_low?: true
+    fmr?: true
+  }
+
+  export type UnitConfigurationCountAggregateInputType = {
+    id?: true
+    propertyId?: true
+    bedrooms?: true
+    bathrooms?: true
+    quantity?: true
+    rent_avm?: true
+    rent_high?: true
+    rent_low?: true
+    fmr?: true
+    _all?: true
+  }
+
+  export type UnitConfigurationAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which UnitConfiguration to aggregate.
+     */
+    where?: UnitConfigurationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UnitConfigurations to fetch.
+     */
+    orderBy?: UnitConfigurationOrderByWithRelationInput | UnitConfigurationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: UnitConfigurationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UnitConfigurations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UnitConfigurations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned UnitConfigurations
+    **/
+    _count?: true | UnitConfigurationCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: UnitConfigurationAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: UnitConfigurationSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: UnitConfigurationMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: UnitConfigurationMaxAggregateInputType
+  }
+
+  export type GetUnitConfigurationAggregateType<T extends UnitConfigurationAggregateArgs> = {
+        [P in keyof T & keyof AggregateUnitConfiguration]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateUnitConfiguration[P]>
+      : GetScalarType<T[P], AggregateUnitConfiguration[P]>
+  }
+
+
+
+
+  export type UnitConfigurationGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UnitConfigurationWhereInput
+    orderBy?: UnitConfigurationOrderByWithAggregationInput | UnitConfigurationOrderByWithAggregationInput[]
+    by: UnitConfigurationScalarFieldEnum[] | UnitConfigurationScalarFieldEnum
+    having?: UnitConfigurationScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: UnitConfigurationCountAggregateInputType | true
+    _avg?: UnitConfigurationAvgAggregateInputType
+    _sum?: UnitConfigurationSumAggregateInputType
+    _min?: UnitConfigurationMinAggregateInputType
+    _max?: UnitConfigurationMaxAggregateInputType
+  }
+
+  export type UnitConfigurationGroupByOutputType = {
+    id: string
+    propertyId: string
+    bedrooms: number
+    bathrooms: number
+    quantity: number
+    rent_avm: number | null
+    rent_high: number | null
+    rent_low: number | null
+    fmr: number | null
+    _count: UnitConfigurationCountAggregateOutputType | null
+    _avg: UnitConfigurationAvgAggregateOutputType | null
+    _sum: UnitConfigurationSumAggregateOutputType | null
+    _min: UnitConfigurationMinAggregateOutputType | null
+    _max: UnitConfigurationMaxAggregateOutputType | null
+  }
+
+  type GetUnitConfigurationGroupByPayload<T extends UnitConfigurationGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<UnitConfigurationGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof UnitConfigurationGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], UnitConfigurationGroupByOutputType[P]>
+            : GetScalarType<T[P], UnitConfigurationGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type UnitConfigurationSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    propertyId?: boolean
+    bedrooms?: boolean
+    bathrooms?: boolean
+    quantity?: boolean
+    rent_avm?: boolean
+    rent_high?: boolean
+    rent_low?: boolean
+    fmr?: boolean
+    property?: boolean | PropertyDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["unitConfiguration"]>
+
+  export type UnitConfigurationSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    propertyId?: boolean
+    bedrooms?: boolean
+    bathrooms?: boolean
+    quantity?: boolean
+    rent_avm?: boolean
+    rent_high?: boolean
+    rent_low?: boolean
+    fmr?: boolean
+    property?: boolean | PropertyDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["unitConfiguration"]>
+
+  export type UnitConfigurationSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    propertyId?: boolean
+    bedrooms?: boolean
+    bathrooms?: boolean
+    quantity?: boolean
+    rent_avm?: boolean
+    rent_high?: boolean
+    rent_low?: boolean
+    fmr?: boolean
+    property?: boolean | PropertyDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["unitConfiguration"]>
+
+  export type UnitConfigurationSelectScalar = {
+    id?: boolean
+    propertyId?: boolean
+    bedrooms?: boolean
+    bathrooms?: boolean
+    quantity?: boolean
+    rent_avm?: boolean
+    rent_high?: boolean
+    rent_low?: boolean
+    fmr?: boolean
+  }
+
+  export type UnitConfigurationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "propertyId" | "bedrooms" | "bathrooms" | "quantity" | "rent_avm" | "rent_high" | "rent_low" | "fmr", ExtArgs["result"]["unitConfiguration"]>
+  export type UnitConfigurationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    property?: boolean | PropertyDefaultArgs<ExtArgs>
+  }
+  export type UnitConfigurationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    property?: boolean | PropertyDefaultArgs<ExtArgs>
+  }
+  export type UnitConfigurationIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    property?: boolean | PropertyDefaultArgs<ExtArgs>
+  }
+
+  export type $UnitConfigurationPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "UnitConfiguration"
+    objects: {
+      property: Prisma.$PropertyPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      propertyId: string
+      bedrooms: number
+      bathrooms: number
+      quantity: number
+      rent_avm: number | null
+      rent_high: number | null
+      rent_low: number | null
+      fmr: number | null
+    }, ExtArgs["result"]["unitConfiguration"]>
+    composites: {}
+  }
+
+  type UnitConfigurationGetPayload<S extends boolean | null | undefined | UnitConfigurationDefaultArgs> = $Result.GetResult<Prisma.$UnitConfigurationPayload, S>
+
+  type UnitConfigurationCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<UnitConfigurationFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: UnitConfigurationCountAggregateInputType | true
+    }
+
+  export interface UnitConfigurationDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['UnitConfiguration'], meta: { name: 'UnitConfiguration' } }
+    /**
+     * Find zero or one UnitConfiguration that matches the filter.
+     * @param {UnitConfigurationFindUniqueArgs} args - Arguments to find a UnitConfiguration
+     * @example
+     * // Get one UnitConfiguration
+     * const unitConfiguration = await prisma.unitConfiguration.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends UnitConfigurationFindUniqueArgs>(args: SelectSubset<T, UnitConfigurationFindUniqueArgs<ExtArgs>>): Prisma__UnitConfigurationClient<$Result.GetResult<Prisma.$UnitConfigurationPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one UnitConfiguration that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {UnitConfigurationFindUniqueOrThrowArgs} args - Arguments to find a UnitConfiguration
+     * @example
+     * // Get one UnitConfiguration
+     * const unitConfiguration = await prisma.unitConfiguration.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends UnitConfigurationFindUniqueOrThrowArgs>(args: SelectSubset<T, UnitConfigurationFindUniqueOrThrowArgs<ExtArgs>>): Prisma__UnitConfigurationClient<$Result.GetResult<Prisma.$UnitConfigurationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first UnitConfiguration that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UnitConfigurationFindFirstArgs} args - Arguments to find a UnitConfiguration
+     * @example
+     * // Get one UnitConfiguration
+     * const unitConfiguration = await prisma.unitConfiguration.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends UnitConfigurationFindFirstArgs>(args?: SelectSubset<T, UnitConfigurationFindFirstArgs<ExtArgs>>): Prisma__UnitConfigurationClient<$Result.GetResult<Prisma.$UnitConfigurationPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first UnitConfiguration that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UnitConfigurationFindFirstOrThrowArgs} args - Arguments to find a UnitConfiguration
+     * @example
+     * // Get one UnitConfiguration
+     * const unitConfiguration = await prisma.unitConfiguration.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends UnitConfigurationFindFirstOrThrowArgs>(args?: SelectSubset<T, UnitConfigurationFindFirstOrThrowArgs<ExtArgs>>): Prisma__UnitConfigurationClient<$Result.GetResult<Prisma.$UnitConfigurationPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more UnitConfigurations that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UnitConfigurationFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all UnitConfigurations
+     * const unitConfigurations = await prisma.unitConfiguration.findMany()
+     * 
+     * // Get first 10 UnitConfigurations
+     * const unitConfigurations = await prisma.unitConfiguration.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const unitConfigurationWithIdOnly = await prisma.unitConfiguration.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends UnitConfigurationFindManyArgs>(args?: SelectSubset<T, UnitConfigurationFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UnitConfigurationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a UnitConfiguration.
+     * @param {UnitConfigurationCreateArgs} args - Arguments to create a UnitConfiguration.
+     * @example
+     * // Create one UnitConfiguration
+     * const UnitConfiguration = await prisma.unitConfiguration.create({
+     *   data: {
+     *     // ... data to create a UnitConfiguration
+     *   }
+     * })
+     * 
+     */
+    create<T extends UnitConfigurationCreateArgs>(args: SelectSubset<T, UnitConfigurationCreateArgs<ExtArgs>>): Prisma__UnitConfigurationClient<$Result.GetResult<Prisma.$UnitConfigurationPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many UnitConfigurations.
+     * @param {UnitConfigurationCreateManyArgs} args - Arguments to create many UnitConfigurations.
+     * @example
+     * // Create many UnitConfigurations
+     * const unitConfiguration = await prisma.unitConfiguration.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends UnitConfigurationCreateManyArgs>(args?: SelectSubset<T, UnitConfigurationCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many UnitConfigurations and returns the data saved in the database.
+     * @param {UnitConfigurationCreateManyAndReturnArgs} args - Arguments to create many UnitConfigurations.
+     * @example
+     * // Create many UnitConfigurations
+     * const unitConfiguration = await prisma.unitConfiguration.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many UnitConfigurations and only return the `id`
+     * const unitConfigurationWithIdOnly = await prisma.unitConfiguration.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends UnitConfigurationCreateManyAndReturnArgs>(args?: SelectSubset<T, UnitConfigurationCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UnitConfigurationPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a UnitConfiguration.
+     * @param {UnitConfigurationDeleteArgs} args - Arguments to delete one UnitConfiguration.
+     * @example
+     * // Delete one UnitConfiguration
+     * const UnitConfiguration = await prisma.unitConfiguration.delete({
+     *   where: {
+     *     // ... filter to delete one UnitConfiguration
+     *   }
+     * })
+     * 
+     */
+    delete<T extends UnitConfigurationDeleteArgs>(args: SelectSubset<T, UnitConfigurationDeleteArgs<ExtArgs>>): Prisma__UnitConfigurationClient<$Result.GetResult<Prisma.$UnitConfigurationPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one UnitConfiguration.
+     * @param {UnitConfigurationUpdateArgs} args - Arguments to update one UnitConfiguration.
+     * @example
+     * // Update one UnitConfiguration
+     * const unitConfiguration = await prisma.unitConfiguration.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends UnitConfigurationUpdateArgs>(args: SelectSubset<T, UnitConfigurationUpdateArgs<ExtArgs>>): Prisma__UnitConfigurationClient<$Result.GetResult<Prisma.$UnitConfigurationPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more UnitConfigurations.
+     * @param {UnitConfigurationDeleteManyArgs} args - Arguments to filter UnitConfigurations to delete.
+     * @example
+     * // Delete a few UnitConfigurations
+     * const { count } = await prisma.unitConfiguration.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends UnitConfigurationDeleteManyArgs>(args?: SelectSubset<T, UnitConfigurationDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more UnitConfigurations.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UnitConfigurationUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many UnitConfigurations
+     * const unitConfiguration = await prisma.unitConfiguration.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends UnitConfigurationUpdateManyArgs>(args: SelectSubset<T, UnitConfigurationUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more UnitConfigurations and returns the data updated in the database.
+     * @param {UnitConfigurationUpdateManyAndReturnArgs} args - Arguments to update many UnitConfigurations.
+     * @example
+     * // Update many UnitConfigurations
+     * const unitConfiguration = await prisma.unitConfiguration.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more UnitConfigurations and only return the `id`
+     * const unitConfigurationWithIdOnly = await prisma.unitConfiguration.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends UnitConfigurationUpdateManyAndReturnArgs>(args: SelectSubset<T, UnitConfigurationUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UnitConfigurationPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one UnitConfiguration.
+     * @param {UnitConfigurationUpsertArgs} args - Arguments to update or create a UnitConfiguration.
+     * @example
+     * // Update or create a UnitConfiguration
+     * const unitConfiguration = await prisma.unitConfiguration.upsert({
+     *   create: {
+     *     // ... data to create a UnitConfiguration
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the UnitConfiguration we want to update
+     *   }
+     * })
+     */
+    upsert<T extends UnitConfigurationUpsertArgs>(args: SelectSubset<T, UnitConfigurationUpsertArgs<ExtArgs>>): Prisma__UnitConfigurationClient<$Result.GetResult<Prisma.$UnitConfigurationPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of UnitConfigurations.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UnitConfigurationCountArgs} args - Arguments to filter UnitConfigurations to count.
+     * @example
+     * // Count the number of UnitConfigurations
+     * const count = await prisma.unitConfiguration.count({
+     *   where: {
+     *     // ... the filter for the UnitConfigurations we want to count
+     *   }
+     * })
+    **/
+    count<T extends UnitConfigurationCountArgs>(
+      args?: Subset<T, UnitConfigurationCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], UnitConfigurationCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a UnitConfiguration.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UnitConfigurationAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends UnitConfigurationAggregateArgs>(args: Subset<T, UnitConfigurationAggregateArgs>): Prisma.PrismaPromise<GetUnitConfigurationAggregateType<T>>
+
+    /**
+     * Group by UnitConfiguration.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UnitConfigurationGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends UnitConfigurationGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: UnitConfigurationGroupByArgs['orderBy'] }
+        : { orderBy?: UnitConfigurationGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, UnitConfigurationGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetUnitConfigurationGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the UnitConfiguration model
+   */
+  readonly fields: UnitConfigurationFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for UnitConfiguration.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__UnitConfigurationClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    property<T extends PropertyDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PropertyDefaultArgs<ExtArgs>>): Prisma__PropertyClient<$Result.GetResult<Prisma.$PropertyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the UnitConfiguration model
+   */
+  interface UnitConfigurationFieldRefs {
+    readonly id: FieldRef<"UnitConfiguration", 'String'>
+    readonly propertyId: FieldRef<"UnitConfiguration", 'String'>
+    readonly bedrooms: FieldRef<"UnitConfiguration", 'Int'>
+    readonly bathrooms: FieldRef<"UnitConfiguration", 'Int'>
+    readonly quantity: FieldRef<"UnitConfiguration", 'Int'>
+    readonly rent_avm: FieldRef<"UnitConfiguration", 'Int'>
+    readonly rent_high: FieldRef<"UnitConfiguration", 'Int'>
+    readonly rent_low: FieldRef<"UnitConfiguration", 'Int'>
+    readonly fmr: FieldRef<"UnitConfiguration", 'Int'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * UnitConfiguration findUnique
+   */
+  export type UnitConfigurationFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UnitConfiguration
+     */
+    select?: UnitConfigurationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UnitConfiguration
+     */
+    omit?: UnitConfigurationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UnitConfigurationInclude<ExtArgs> | null
+    /**
+     * Filter, which UnitConfiguration to fetch.
+     */
+    where: UnitConfigurationWhereUniqueInput
+  }
+
+  /**
+   * UnitConfiguration findUniqueOrThrow
+   */
+  export type UnitConfigurationFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UnitConfiguration
+     */
+    select?: UnitConfigurationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UnitConfiguration
+     */
+    omit?: UnitConfigurationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UnitConfigurationInclude<ExtArgs> | null
+    /**
+     * Filter, which UnitConfiguration to fetch.
+     */
+    where: UnitConfigurationWhereUniqueInput
+  }
+
+  /**
+   * UnitConfiguration findFirst
+   */
+  export type UnitConfigurationFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UnitConfiguration
+     */
+    select?: UnitConfigurationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UnitConfiguration
+     */
+    omit?: UnitConfigurationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UnitConfigurationInclude<ExtArgs> | null
+    /**
+     * Filter, which UnitConfiguration to fetch.
+     */
+    where?: UnitConfigurationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UnitConfigurations to fetch.
+     */
+    orderBy?: UnitConfigurationOrderByWithRelationInput | UnitConfigurationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for UnitConfigurations.
+     */
+    cursor?: UnitConfigurationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UnitConfigurations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UnitConfigurations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of UnitConfigurations.
+     */
+    distinct?: UnitConfigurationScalarFieldEnum | UnitConfigurationScalarFieldEnum[]
+  }
+
+  /**
+   * UnitConfiguration findFirstOrThrow
+   */
+  export type UnitConfigurationFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UnitConfiguration
+     */
+    select?: UnitConfigurationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UnitConfiguration
+     */
+    omit?: UnitConfigurationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UnitConfigurationInclude<ExtArgs> | null
+    /**
+     * Filter, which UnitConfiguration to fetch.
+     */
+    where?: UnitConfigurationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UnitConfigurations to fetch.
+     */
+    orderBy?: UnitConfigurationOrderByWithRelationInput | UnitConfigurationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for UnitConfigurations.
+     */
+    cursor?: UnitConfigurationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UnitConfigurations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UnitConfigurations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of UnitConfigurations.
+     */
+    distinct?: UnitConfigurationScalarFieldEnum | UnitConfigurationScalarFieldEnum[]
+  }
+
+  /**
+   * UnitConfiguration findMany
+   */
+  export type UnitConfigurationFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UnitConfiguration
+     */
+    select?: UnitConfigurationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UnitConfiguration
+     */
+    omit?: UnitConfigurationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UnitConfigurationInclude<ExtArgs> | null
+    /**
+     * Filter, which UnitConfigurations to fetch.
+     */
+    where?: UnitConfigurationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UnitConfigurations to fetch.
+     */
+    orderBy?: UnitConfigurationOrderByWithRelationInput | UnitConfigurationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing UnitConfigurations.
+     */
+    cursor?: UnitConfigurationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UnitConfigurations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UnitConfigurations.
+     */
+    skip?: number
+    distinct?: UnitConfigurationScalarFieldEnum | UnitConfigurationScalarFieldEnum[]
+  }
+
+  /**
+   * UnitConfiguration create
+   */
+  export type UnitConfigurationCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UnitConfiguration
+     */
+    select?: UnitConfigurationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UnitConfiguration
+     */
+    omit?: UnitConfigurationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UnitConfigurationInclude<ExtArgs> | null
+    /**
+     * The data needed to create a UnitConfiguration.
+     */
+    data: XOR<UnitConfigurationCreateInput, UnitConfigurationUncheckedCreateInput>
+  }
+
+  /**
+   * UnitConfiguration createMany
+   */
+  export type UnitConfigurationCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many UnitConfigurations.
+     */
+    data: UnitConfigurationCreateManyInput | UnitConfigurationCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * UnitConfiguration createManyAndReturn
+   */
+  export type UnitConfigurationCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UnitConfiguration
+     */
+    select?: UnitConfigurationSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the UnitConfiguration
+     */
+    omit?: UnitConfigurationOmit<ExtArgs> | null
+    /**
+     * The data used to create many UnitConfigurations.
+     */
+    data: UnitConfigurationCreateManyInput | UnitConfigurationCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UnitConfigurationIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * UnitConfiguration update
+   */
+  export type UnitConfigurationUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UnitConfiguration
+     */
+    select?: UnitConfigurationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UnitConfiguration
+     */
+    omit?: UnitConfigurationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UnitConfigurationInclude<ExtArgs> | null
+    /**
+     * The data needed to update a UnitConfiguration.
+     */
+    data: XOR<UnitConfigurationUpdateInput, UnitConfigurationUncheckedUpdateInput>
+    /**
+     * Choose, which UnitConfiguration to update.
+     */
+    where: UnitConfigurationWhereUniqueInput
+  }
+
+  /**
+   * UnitConfiguration updateMany
+   */
+  export type UnitConfigurationUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update UnitConfigurations.
+     */
+    data: XOR<UnitConfigurationUpdateManyMutationInput, UnitConfigurationUncheckedUpdateManyInput>
+    /**
+     * Filter which UnitConfigurations to update
+     */
+    where?: UnitConfigurationWhereInput
+    /**
+     * Limit how many UnitConfigurations to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * UnitConfiguration updateManyAndReturn
+   */
+  export type UnitConfigurationUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UnitConfiguration
+     */
+    select?: UnitConfigurationSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the UnitConfiguration
+     */
+    omit?: UnitConfigurationOmit<ExtArgs> | null
+    /**
+     * The data used to update UnitConfigurations.
+     */
+    data: XOR<UnitConfigurationUpdateManyMutationInput, UnitConfigurationUncheckedUpdateManyInput>
+    /**
+     * Filter which UnitConfigurations to update
+     */
+    where?: UnitConfigurationWhereInput
+    /**
+     * Limit how many UnitConfigurations to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UnitConfigurationIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * UnitConfiguration upsert
+   */
+  export type UnitConfigurationUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UnitConfiguration
+     */
+    select?: UnitConfigurationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UnitConfiguration
+     */
+    omit?: UnitConfigurationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UnitConfigurationInclude<ExtArgs> | null
+    /**
+     * The filter to search for the UnitConfiguration to update in case it exists.
+     */
+    where: UnitConfigurationWhereUniqueInput
+    /**
+     * In case the UnitConfiguration found by the `where` argument doesn't exist, create a new UnitConfiguration with this data.
+     */
+    create: XOR<UnitConfigurationCreateInput, UnitConfigurationUncheckedCreateInput>
+    /**
+     * In case the UnitConfiguration was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<UnitConfigurationUpdateInput, UnitConfigurationUncheckedUpdateInput>
+  }
+
+  /**
+   * UnitConfiguration delete
+   */
+  export type UnitConfigurationDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UnitConfiguration
+     */
+    select?: UnitConfigurationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UnitConfiguration
+     */
+    omit?: UnitConfigurationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UnitConfigurationInclude<ExtArgs> | null
+    /**
+     * Filter which UnitConfiguration to delete.
+     */
+    where: UnitConfigurationWhereUniqueInput
+  }
+
+  /**
+   * UnitConfiguration deleteMany
+   */
+  export type UnitConfigurationDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which UnitConfigurations to delete
+     */
+    where?: UnitConfigurationWhereInput
+    /**
+     * Limit how many UnitConfigurations to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * UnitConfiguration without action
+   */
+  export type UnitConfigurationDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UnitConfiguration
+     */
+    select?: UnitConfigurationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UnitConfiguration
+     */
+    omit?: UnitConfigurationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UnitConfigurationInclude<ExtArgs> | null
   }
 
 
@@ -6538,6 +7835,21 @@ export namespace Prisma {
   export type PropertyMetaScalarFieldEnum = (typeof PropertyMetaScalarFieldEnum)[keyof typeof PropertyMetaScalarFieldEnum]
 
 
+  export const UnitConfigurationScalarFieldEnum: {
+    id: 'id',
+    propertyId: 'propertyId',
+    bedrooms: 'bedrooms',
+    bathrooms: 'bathrooms',
+    quantity: 'quantity',
+    rent_avm: 'rent_avm',
+    rent_high: 'rent_high',
+    rent_low: 'rent_low',
+    fmr: 'fmr'
+  };
+
+  export type UnitConfigurationScalarFieldEnum = (typeof UnitConfigurationScalarFieldEnum)[keyof typeof UnitConfigurationScalarFieldEnum]
+
+
   export const LookupResultScalarFieldEnum: {
     id: 'id',
     propertyId: 'propertyId',
@@ -6687,6 +7999,20 @@ export namespace Prisma {
    */
   export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
     
+
+
+  /**
+   * Reference to a field of type 'Float'
+   */
+  export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+  /**
+   * Reference to a field of type 'Float[]'
+   */
+  export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+    
   /**
    * Deep Input Types
    */
@@ -6704,6 +8030,7 @@ export namespace Prisma {
     address?: XOR<AddressNullableScalarRelationFilter, AddressWhereInput> | null
     PropertyMeta?: PropertyMetaListRelationFilter
     LookupResult?: LookupResultListRelationFilter
+    units?: UnitConfigurationListRelationFilter
   }
 
   export type PropertyOrderByWithRelationInput = {
@@ -6715,6 +8042,7 @@ export namespace Prisma {
     address?: AddressOrderByWithRelationInput
     PropertyMeta?: PropertyMetaOrderByRelationAggregateInput
     LookupResult?: LookupResultOrderByRelationAggregateInput
+    units?: UnitConfigurationOrderByRelationAggregateInput
   }
 
   export type PropertyWhereUniqueInput = Prisma.AtLeast<{
@@ -6729,6 +8057,7 @@ export namespace Prisma {
     address?: XOR<AddressNullableScalarRelationFilter, AddressWhereInput> | null
     PropertyMeta?: PropertyMetaListRelationFilter
     LookupResult?: LookupResultListRelationFilter
+    units?: UnitConfigurationListRelationFilter
   }, "id">
 
   export type PropertyOrderByWithAggregationInput = {
@@ -6807,6 +8136,84 @@ export namespace Prisma {
     key?: StringWithAggregatesFilter<"PropertyMeta"> | string
     value?: StringNullableWithAggregatesFilter<"PropertyMeta"> | string | null
     json?: JsonNullableWithAggregatesFilter<"PropertyMeta">
+  }
+
+  export type UnitConfigurationWhereInput = {
+    AND?: UnitConfigurationWhereInput | UnitConfigurationWhereInput[]
+    OR?: UnitConfigurationWhereInput[]
+    NOT?: UnitConfigurationWhereInput | UnitConfigurationWhereInput[]
+    id?: StringFilter<"UnitConfiguration"> | string
+    propertyId?: StringFilter<"UnitConfiguration"> | string
+    bedrooms?: IntFilter<"UnitConfiguration"> | number
+    bathrooms?: IntFilter<"UnitConfiguration"> | number
+    quantity?: IntFilter<"UnitConfiguration"> | number
+    rent_avm?: IntNullableFilter<"UnitConfiguration"> | number | null
+    rent_high?: IntNullableFilter<"UnitConfiguration"> | number | null
+    rent_low?: IntNullableFilter<"UnitConfiguration"> | number | null
+    fmr?: IntNullableFilter<"UnitConfiguration"> | number | null
+    property?: XOR<PropertyScalarRelationFilter, PropertyWhereInput>
+  }
+
+  export type UnitConfigurationOrderByWithRelationInput = {
+    id?: SortOrder
+    propertyId?: SortOrder
+    bedrooms?: SortOrder
+    bathrooms?: SortOrder
+    quantity?: SortOrder
+    rent_avm?: SortOrderInput | SortOrder
+    rent_high?: SortOrderInput | SortOrder
+    rent_low?: SortOrderInput | SortOrder
+    fmr?: SortOrderInput | SortOrder
+    property?: PropertyOrderByWithRelationInput
+  }
+
+  export type UnitConfigurationWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    propertyId_bedrooms_bathrooms?: UnitConfigurationPropertyIdBedroomsBathroomsCompoundUniqueInput
+    AND?: UnitConfigurationWhereInput | UnitConfigurationWhereInput[]
+    OR?: UnitConfigurationWhereInput[]
+    NOT?: UnitConfigurationWhereInput | UnitConfigurationWhereInput[]
+    propertyId?: StringFilter<"UnitConfiguration"> | string
+    bedrooms?: IntFilter<"UnitConfiguration"> | number
+    bathrooms?: IntFilter<"UnitConfiguration"> | number
+    quantity?: IntFilter<"UnitConfiguration"> | number
+    rent_avm?: IntNullableFilter<"UnitConfiguration"> | number | null
+    rent_high?: IntNullableFilter<"UnitConfiguration"> | number | null
+    rent_low?: IntNullableFilter<"UnitConfiguration"> | number | null
+    fmr?: IntNullableFilter<"UnitConfiguration"> | number | null
+    property?: XOR<PropertyScalarRelationFilter, PropertyWhereInput>
+  }, "id" | "propertyId_bedrooms_bathrooms">
+
+  export type UnitConfigurationOrderByWithAggregationInput = {
+    id?: SortOrder
+    propertyId?: SortOrder
+    bedrooms?: SortOrder
+    bathrooms?: SortOrder
+    quantity?: SortOrder
+    rent_avm?: SortOrderInput | SortOrder
+    rent_high?: SortOrderInput | SortOrder
+    rent_low?: SortOrderInput | SortOrder
+    fmr?: SortOrderInput | SortOrder
+    _count?: UnitConfigurationCountOrderByAggregateInput
+    _avg?: UnitConfigurationAvgOrderByAggregateInput
+    _max?: UnitConfigurationMaxOrderByAggregateInput
+    _min?: UnitConfigurationMinOrderByAggregateInput
+    _sum?: UnitConfigurationSumOrderByAggregateInput
+  }
+
+  export type UnitConfigurationScalarWhereWithAggregatesInput = {
+    AND?: UnitConfigurationScalarWhereWithAggregatesInput | UnitConfigurationScalarWhereWithAggregatesInput[]
+    OR?: UnitConfigurationScalarWhereWithAggregatesInput[]
+    NOT?: UnitConfigurationScalarWhereWithAggregatesInput | UnitConfigurationScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"UnitConfiguration"> | string
+    propertyId?: StringWithAggregatesFilter<"UnitConfiguration"> | string
+    bedrooms?: IntWithAggregatesFilter<"UnitConfiguration"> | number
+    bathrooms?: IntWithAggregatesFilter<"UnitConfiguration"> | number
+    quantity?: IntWithAggregatesFilter<"UnitConfiguration"> | number
+    rent_avm?: IntNullableWithAggregatesFilter<"UnitConfiguration"> | number | null
+    rent_high?: IntNullableWithAggregatesFilter<"UnitConfiguration"> | number | null
+    rent_low?: IntNullableWithAggregatesFilter<"UnitConfiguration"> | number | null
+    fmr?: IntNullableWithAggregatesFilter<"UnitConfiguration"> | number | null
   }
 
   export type LookupResultWhereInput = {
@@ -6955,6 +8362,7 @@ export namespace Prisma {
     address?: AddressCreateNestedOneWithoutPropertyInput
     PropertyMeta?: PropertyMetaCreateNestedManyWithoutPropertyInput
     LookupResult?: LookupResultCreateNestedManyWithoutPropertyInput
+    units?: UnitConfigurationCreateNestedManyWithoutPropertyInput
   }
 
   export type PropertyUncheckedCreateInput = {
@@ -6966,6 +8374,7 @@ export namespace Prisma {
     address?: AddressUncheckedCreateNestedOneWithoutPropertyInput
     PropertyMeta?: PropertyMetaUncheckedCreateNestedManyWithoutPropertyInput
     LookupResult?: LookupResultUncheckedCreateNestedManyWithoutPropertyInput
+    units?: UnitConfigurationUncheckedCreateNestedManyWithoutPropertyInput
   }
 
   export type PropertyUpdateInput = {
@@ -6977,6 +8386,7 @@ export namespace Prisma {
     address?: AddressUpdateOneWithoutPropertyNestedInput
     PropertyMeta?: PropertyMetaUpdateManyWithoutPropertyNestedInput
     LookupResult?: LookupResultUpdateManyWithoutPropertyNestedInput
+    units?: UnitConfigurationUpdateManyWithoutPropertyNestedInput
   }
 
   export type PropertyUncheckedUpdateInput = {
@@ -6988,6 +8398,7 @@ export namespace Prisma {
     address?: AddressUncheckedUpdateOneWithoutPropertyNestedInput
     PropertyMeta?: PropertyMetaUncheckedUpdateManyWithoutPropertyNestedInput
     LookupResult?: LookupResultUncheckedUpdateManyWithoutPropertyNestedInput
+    units?: UnitConfigurationUncheckedUpdateManyWithoutPropertyNestedInput
   }
 
   export type PropertyCreateManyInput = {
@@ -7067,6 +8478,89 @@ export namespace Prisma {
     key?: StringFieldUpdateOperationsInput | string
     value?: NullableStringFieldUpdateOperationsInput | string | null
     json?: NullableJsonNullValueInput | InputJsonValue
+  }
+
+  export type UnitConfigurationCreateInput = {
+    id?: string
+    bedrooms: number
+    bathrooms: number
+    quantity: number
+    rent_avm?: number | null
+    rent_high?: number | null
+    rent_low?: number | null
+    fmr?: number | null
+    property: PropertyCreateNestedOneWithoutUnitsInput
+  }
+
+  export type UnitConfigurationUncheckedCreateInput = {
+    id?: string
+    propertyId: string
+    bedrooms: number
+    bathrooms: number
+    quantity: number
+    rent_avm?: number | null
+    rent_high?: number | null
+    rent_low?: number | null
+    fmr?: number | null
+  }
+
+  export type UnitConfigurationUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    bedrooms?: IntFieldUpdateOperationsInput | number
+    bathrooms?: IntFieldUpdateOperationsInput | number
+    quantity?: IntFieldUpdateOperationsInput | number
+    rent_avm?: NullableIntFieldUpdateOperationsInput | number | null
+    rent_high?: NullableIntFieldUpdateOperationsInput | number | null
+    rent_low?: NullableIntFieldUpdateOperationsInput | number | null
+    fmr?: NullableIntFieldUpdateOperationsInput | number | null
+    property?: PropertyUpdateOneRequiredWithoutUnitsNestedInput
+  }
+
+  export type UnitConfigurationUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    propertyId?: StringFieldUpdateOperationsInput | string
+    bedrooms?: IntFieldUpdateOperationsInput | number
+    bathrooms?: IntFieldUpdateOperationsInput | number
+    quantity?: IntFieldUpdateOperationsInput | number
+    rent_avm?: NullableIntFieldUpdateOperationsInput | number | null
+    rent_high?: NullableIntFieldUpdateOperationsInput | number | null
+    rent_low?: NullableIntFieldUpdateOperationsInput | number | null
+    fmr?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type UnitConfigurationCreateManyInput = {
+    id?: string
+    propertyId: string
+    bedrooms: number
+    bathrooms: number
+    quantity: number
+    rent_avm?: number | null
+    rent_high?: number | null
+    rent_low?: number | null
+    fmr?: number | null
+  }
+
+  export type UnitConfigurationUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    bedrooms?: IntFieldUpdateOperationsInput | number
+    bathrooms?: IntFieldUpdateOperationsInput | number
+    quantity?: IntFieldUpdateOperationsInput | number
+    rent_avm?: NullableIntFieldUpdateOperationsInput | number | null
+    rent_high?: NullableIntFieldUpdateOperationsInput | number | null
+    rent_low?: NullableIntFieldUpdateOperationsInput | number | null
+    fmr?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type UnitConfigurationUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    propertyId?: StringFieldUpdateOperationsInput | string
+    bedrooms?: IntFieldUpdateOperationsInput | number
+    bathrooms?: IntFieldUpdateOperationsInput | number
+    quantity?: IntFieldUpdateOperationsInput | number
+    rent_avm?: NullableIntFieldUpdateOperationsInput | number | null
+    rent_high?: NullableIntFieldUpdateOperationsInput | number | null
+    rent_low?: NullableIntFieldUpdateOperationsInput | number | null
+    fmr?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type LookupResultCreateInput = {
@@ -7250,11 +8744,21 @@ export namespace Prisma {
     none?: LookupResultWhereInput
   }
 
+  export type UnitConfigurationListRelationFilter = {
+    every?: UnitConfigurationWhereInput
+    some?: UnitConfigurationWhereInput
+    none?: UnitConfigurationWhereInput
+  }
+
   export type PropertyMetaOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
   export type LookupResultOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type UnitConfigurationOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -7442,6 +8946,122 @@ export namespace Prisma {
     _min?: NestedJsonNullableFilter<$PrismaModel>
     _max?: NestedJsonNullableFilter<$PrismaModel>
   }
+
+  export type IntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
+  }
+
+  export type IntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type UnitConfigurationPropertyIdBedroomsBathroomsCompoundUniqueInput = {
+    propertyId: string
+    bedrooms: number
+    bathrooms: number
+  }
+
+  export type UnitConfigurationCountOrderByAggregateInput = {
+    id?: SortOrder
+    propertyId?: SortOrder
+    bedrooms?: SortOrder
+    bathrooms?: SortOrder
+    quantity?: SortOrder
+    rent_avm?: SortOrder
+    rent_high?: SortOrder
+    rent_low?: SortOrder
+    fmr?: SortOrder
+  }
+
+  export type UnitConfigurationAvgOrderByAggregateInput = {
+    bedrooms?: SortOrder
+    bathrooms?: SortOrder
+    quantity?: SortOrder
+    rent_avm?: SortOrder
+    rent_high?: SortOrder
+    rent_low?: SortOrder
+    fmr?: SortOrder
+  }
+
+  export type UnitConfigurationMaxOrderByAggregateInput = {
+    id?: SortOrder
+    propertyId?: SortOrder
+    bedrooms?: SortOrder
+    bathrooms?: SortOrder
+    quantity?: SortOrder
+    rent_avm?: SortOrder
+    rent_high?: SortOrder
+    rent_low?: SortOrder
+    fmr?: SortOrder
+  }
+
+  export type UnitConfigurationMinOrderByAggregateInput = {
+    id?: SortOrder
+    propertyId?: SortOrder
+    bedrooms?: SortOrder
+    bathrooms?: SortOrder
+    quantity?: SortOrder
+    rent_avm?: SortOrder
+    rent_high?: SortOrder
+    rent_low?: SortOrder
+    fmr?: SortOrder
+  }
+
+  export type UnitConfigurationSumOrderByAggregateInput = {
+    bedrooms?: SortOrder
+    bathrooms?: SortOrder
+    quantity?: SortOrder
+    rent_avm?: SortOrder
+    rent_high?: SortOrder
+    rent_low?: SortOrder
+    fmr?: SortOrder
+  }
+
+  export type IntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
   export type JsonFilter<$PrismaModel = never> =
     | PatchUndefined<
         Either<Required<JsonFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonFilterBase<$PrismaModel>>, 'path'>>,
@@ -7565,6 +9185,13 @@ export namespace Prisma {
     connect?: LookupResultWhereUniqueInput | LookupResultWhereUniqueInput[]
   }
 
+  export type UnitConfigurationCreateNestedManyWithoutPropertyInput = {
+    create?: XOR<UnitConfigurationCreateWithoutPropertyInput, UnitConfigurationUncheckedCreateWithoutPropertyInput> | UnitConfigurationCreateWithoutPropertyInput[] | UnitConfigurationUncheckedCreateWithoutPropertyInput[]
+    connectOrCreate?: UnitConfigurationCreateOrConnectWithoutPropertyInput | UnitConfigurationCreateOrConnectWithoutPropertyInput[]
+    createMany?: UnitConfigurationCreateManyPropertyInputEnvelope
+    connect?: UnitConfigurationWhereUniqueInput | UnitConfigurationWhereUniqueInput[]
+  }
+
   export type AddressUncheckedCreateNestedOneWithoutPropertyInput = {
     create?: XOR<AddressCreateWithoutPropertyInput, AddressUncheckedCreateWithoutPropertyInput>
     connectOrCreate?: AddressCreateOrConnectWithoutPropertyInput
@@ -7583,6 +9210,13 @@ export namespace Prisma {
     connectOrCreate?: LookupResultCreateOrConnectWithoutPropertyInput | LookupResultCreateOrConnectWithoutPropertyInput[]
     createMany?: LookupResultCreateManyPropertyInputEnvelope
     connect?: LookupResultWhereUniqueInput | LookupResultWhereUniqueInput[]
+  }
+
+  export type UnitConfigurationUncheckedCreateNestedManyWithoutPropertyInput = {
+    create?: XOR<UnitConfigurationCreateWithoutPropertyInput, UnitConfigurationUncheckedCreateWithoutPropertyInput> | UnitConfigurationCreateWithoutPropertyInput[] | UnitConfigurationUncheckedCreateWithoutPropertyInput[]
+    connectOrCreate?: UnitConfigurationCreateOrConnectWithoutPropertyInput | UnitConfigurationCreateOrConnectWithoutPropertyInput[]
+    createMany?: UnitConfigurationCreateManyPropertyInputEnvelope
+    connect?: UnitConfigurationWhereUniqueInput | UnitConfigurationWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -7635,6 +9269,20 @@ export namespace Prisma {
     deleteMany?: LookupResultScalarWhereInput | LookupResultScalarWhereInput[]
   }
 
+  export type UnitConfigurationUpdateManyWithoutPropertyNestedInput = {
+    create?: XOR<UnitConfigurationCreateWithoutPropertyInput, UnitConfigurationUncheckedCreateWithoutPropertyInput> | UnitConfigurationCreateWithoutPropertyInput[] | UnitConfigurationUncheckedCreateWithoutPropertyInput[]
+    connectOrCreate?: UnitConfigurationCreateOrConnectWithoutPropertyInput | UnitConfigurationCreateOrConnectWithoutPropertyInput[]
+    upsert?: UnitConfigurationUpsertWithWhereUniqueWithoutPropertyInput | UnitConfigurationUpsertWithWhereUniqueWithoutPropertyInput[]
+    createMany?: UnitConfigurationCreateManyPropertyInputEnvelope
+    set?: UnitConfigurationWhereUniqueInput | UnitConfigurationWhereUniqueInput[]
+    disconnect?: UnitConfigurationWhereUniqueInput | UnitConfigurationWhereUniqueInput[]
+    delete?: UnitConfigurationWhereUniqueInput | UnitConfigurationWhereUniqueInput[]
+    connect?: UnitConfigurationWhereUniqueInput | UnitConfigurationWhereUniqueInput[]
+    update?: UnitConfigurationUpdateWithWhereUniqueWithoutPropertyInput | UnitConfigurationUpdateWithWhereUniqueWithoutPropertyInput[]
+    updateMany?: UnitConfigurationUpdateManyWithWhereWithoutPropertyInput | UnitConfigurationUpdateManyWithWhereWithoutPropertyInput[]
+    deleteMany?: UnitConfigurationScalarWhereInput | UnitConfigurationScalarWhereInput[]
+  }
+
   export type AddressUncheckedUpdateOneWithoutPropertyNestedInput = {
     create?: XOR<AddressCreateWithoutPropertyInput, AddressUncheckedCreateWithoutPropertyInput>
     connectOrCreate?: AddressCreateOrConnectWithoutPropertyInput
@@ -7673,6 +9321,20 @@ export namespace Prisma {
     deleteMany?: LookupResultScalarWhereInput | LookupResultScalarWhereInput[]
   }
 
+  export type UnitConfigurationUncheckedUpdateManyWithoutPropertyNestedInput = {
+    create?: XOR<UnitConfigurationCreateWithoutPropertyInput, UnitConfigurationUncheckedCreateWithoutPropertyInput> | UnitConfigurationCreateWithoutPropertyInput[] | UnitConfigurationUncheckedCreateWithoutPropertyInput[]
+    connectOrCreate?: UnitConfigurationCreateOrConnectWithoutPropertyInput | UnitConfigurationCreateOrConnectWithoutPropertyInput[]
+    upsert?: UnitConfigurationUpsertWithWhereUniqueWithoutPropertyInput | UnitConfigurationUpsertWithWhereUniqueWithoutPropertyInput[]
+    createMany?: UnitConfigurationCreateManyPropertyInputEnvelope
+    set?: UnitConfigurationWhereUniqueInput | UnitConfigurationWhereUniqueInput[]
+    disconnect?: UnitConfigurationWhereUniqueInput | UnitConfigurationWhereUniqueInput[]
+    delete?: UnitConfigurationWhereUniqueInput | UnitConfigurationWhereUniqueInput[]
+    connect?: UnitConfigurationWhereUniqueInput | UnitConfigurationWhereUniqueInput[]
+    update?: UnitConfigurationUpdateWithWhereUniqueWithoutPropertyInput | UnitConfigurationUpdateWithWhereUniqueWithoutPropertyInput[]
+    updateMany?: UnitConfigurationUpdateManyWithWhereWithoutPropertyInput | UnitConfigurationUpdateManyWithWhereWithoutPropertyInput[]
+    deleteMany?: UnitConfigurationScalarWhereInput | UnitConfigurationScalarWhereInput[]
+  }
+
   export type PropertyCreateNestedOneWithoutPropertyMetaInput = {
     create?: XOR<PropertyCreateWithoutPropertyMetaInput, PropertyUncheckedCreateWithoutPropertyMetaInput>
     connectOrCreate?: PropertyCreateOrConnectWithoutPropertyMetaInput
@@ -7689,6 +9351,36 @@ export namespace Prisma {
     upsert?: PropertyUpsertWithoutPropertyMetaInput
     connect?: PropertyWhereUniqueInput
     update?: XOR<XOR<PropertyUpdateToOneWithWhereWithoutPropertyMetaInput, PropertyUpdateWithoutPropertyMetaInput>, PropertyUncheckedUpdateWithoutPropertyMetaInput>
+  }
+
+  export type PropertyCreateNestedOneWithoutUnitsInput = {
+    create?: XOR<PropertyCreateWithoutUnitsInput, PropertyUncheckedCreateWithoutUnitsInput>
+    connectOrCreate?: PropertyCreateOrConnectWithoutUnitsInput
+    connect?: PropertyWhereUniqueInput
+  }
+
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type NullableIntFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type PropertyUpdateOneRequiredWithoutUnitsNestedInput = {
+    create?: XOR<PropertyCreateWithoutUnitsInput, PropertyUncheckedCreateWithoutUnitsInput>
+    connectOrCreate?: PropertyCreateOrConnectWithoutUnitsInput
+    upsert?: PropertyUpsertWithoutUnitsInput
+    connect?: PropertyWhereUniqueInput
+    update?: XOR<XOR<PropertyUpdateToOneWithWhereWithoutUnitsInput, PropertyUpdateWithoutUnitsInput>, PropertyUncheckedUpdateWithoutUnitsInput>
   }
 
   export type PropertyCreateNestedOneWithoutLookupResultInput = {
@@ -7867,6 +9559,60 @@ export namespace Prisma {
     gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
+
+  export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type NestedFloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
+  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type NestedFloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
   export type NestedJsonFilter<$PrismaModel = never> =
     | PatchUndefined<
         Either<Required<NestedJsonFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonFilterBase<$PrismaModel>>, 'path'>>,
@@ -7954,6 +9700,38 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type UnitConfigurationCreateWithoutPropertyInput = {
+    id?: string
+    bedrooms: number
+    bathrooms: number
+    quantity: number
+    rent_avm?: number | null
+    rent_high?: number | null
+    rent_low?: number | null
+    fmr?: number | null
+  }
+
+  export type UnitConfigurationUncheckedCreateWithoutPropertyInput = {
+    id?: string
+    bedrooms: number
+    bathrooms: number
+    quantity: number
+    rent_avm?: number | null
+    rent_high?: number | null
+    rent_low?: number | null
+    fmr?: number | null
+  }
+
+  export type UnitConfigurationCreateOrConnectWithoutPropertyInput = {
+    where: UnitConfigurationWhereUniqueInput
+    create: XOR<UnitConfigurationCreateWithoutPropertyInput, UnitConfigurationUncheckedCreateWithoutPropertyInput>
+  }
+
+  export type UnitConfigurationCreateManyPropertyInputEnvelope = {
+    data: UnitConfigurationCreateManyPropertyInput | UnitConfigurationCreateManyPropertyInput[]
+    skipDuplicates?: boolean
+  }
+
   export type AddressUpsertWithoutPropertyInput = {
     update: XOR<AddressUpdateWithoutPropertyInput, AddressUncheckedUpdateWithoutPropertyInput>
     create: XOR<AddressCreateWithoutPropertyInput, AddressUncheckedCreateWithoutPropertyInput>
@@ -8029,6 +9807,37 @@ export namespace Prisma {
     json?: JsonFilter<"LookupResult">
   }
 
+  export type UnitConfigurationUpsertWithWhereUniqueWithoutPropertyInput = {
+    where: UnitConfigurationWhereUniqueInput
+    update: XOR<UnitConfigurationUpdateWithoutPropertyInput, UnitConfigurationUncheckedUpdateWithoutPropertyInput>
+    create: XOR<UnitConfigurationCreateWithoutPropertyInput, UnitConfigurationUncheckedCreateWithoutPropertyInput>
+  }
+
+  export type UnitConfigurationUpdateWithWhereUniqueWithoutPropertyInput = {
+    where: UnitConfigurationWhereUniqueInput
+    data: XOR<UnitConfigurationUpdateWithoutPropertyInput, UnitConfigurationUncheckedUpdateWithoutPropertyInput>
+  }
+
+  export type UnitConfigurationUpdateManyWithWhereWithoutPropertyInput = {
+    where: UnitConfigurationScalarWhereInput
+    data: XOR<UnitConfigurationUpdateManyMutationInput, UnitConfigurationUncheckedUpdateManyWithoutPropertyInput>
+  }
+
+  export type UnitConfigurationScalarWhereInput = {
+    AND?: UnitConfigurationScalarWhereInput | UnitConfigurationScalarWhereInput[]
+    OR?: UnitConfigurationScalarWhereInput[]
+    NOT?: UnitConfigurationScalarWhereInput | UnitConfigurationScalarWhereInput[]
+    id?: StringFilter<"UnitConfiguration"> | string
+    propertyId?: StringFilter<"UnitConfiguration"> | string
+    bedrooms?: IntFilter<"UnitConfiguration"> | number
+    bathrooms?: IntFilter<"UnitConfiguration"> | number
+    quantity?: IntFilter<"UnitConfiguration"> | number
+    rent_avm?: IntNullableFilter<"UnitConfiguration"> | number | null
+    rent_high?: IntNullableFilter<"UnitConfiguration"> | number | null
+    rent_low?: IntNullableFilter<"UnitConfiguration"> | number | null
+    fmr?: IntNullableFilter<"UnitConfiguration"> | number | null
+  }
+
   export type PropertyCreateWithoutPropertyMetaInput = {
     id?: string
     type: $Enums.PropertyType
@@ -8037,6 +9846,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     address?: AddressCreateNestedOneWithoutPropertyInput
     LookupResult?: LookupResultCreateNestedManyWithoutPropertyInput
+    units?: UnitConfigurationCreateNestedManyWithoutPropertyInput
   }
 
   export type PropertyUncheckedCreateWithoutPropertyMetaInput = {
@@ -8047,6 +9857,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     address?: AddressUncheckedCreateNestedOneWithoutPropertyInput
     LookupResult?: LookupResultUncheckedCreateNestedManyWithoutPropertyInput
+    units?: UnitConfigurationUncheckedCreateNestedManyWithoutPropertyInput
   }
 
   export type PropertyCreateOrConnectWithoutPropertyMetaInput = {
@@ -8073,6 +9884,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     address?: AddressUpdateOneWithoutPropertyNestedInput
     LookupResult?: LookupResultUpdateManyWithoutPropertyNestedInput
+    units?: UnitConfigurationUpdateManyWithoutPropertyNestedInput
   }
 
   export type PropertyUncheckedUpdateWithoutPropertyMetaInput = {
@@ -8082,6 +9894,67 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     address?: AddressUncheckedUpdateOneWithoutPropertyNestedInput
+    LookupResult?: LookupResultUncheckedUpdateManyWithoutPropertyNestedInput
+    units?: UnitConfigurationUncheckedUpdateManyWithoutPropertyNestedInput
+  }
+
+  export type PropertyCreateWithoutUnitsInput = {
+    id?: string
+    type: $Enums.PropertyType
+    stage?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    address?: AddressCreateNestedOneWithoutPropertyInput
+    PropertyMeta?: PropertyMetaCreateNestedManyWithoutPropertyInput
+    LookupResult?: LookupResultCreateNestedManyWithoutPropertyInput
+  }
+
+  export type PropertyUncheckedCreateWithoutUnitsInput = {
+    id?: string
+    type: $Enums.PropertyType
+    stage?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    address?: AddressUncheckedCreateNestedOneWithoutPropertyInput
+    PropertyMeta?: PropertyMetaUncheckedCreateNestedManyWithoutPropertyInput
+    LookupResult?: LookupResultUncheckedCreateNestedManyWithoutPropertyInput
+  }
+
+  export type PropertyCreateOrConnectWithoutUnitsInput = {
+    where: PropertyWhereUniqueInput
+    create: XOR<PropertyCreateWithoutUnitsInput, PropertyUncheckedCreateWithoutUnitsInput>
+  }
+
+  export type PropertyUpsertWithoutUnitsInput = {
+    update: XOR<PropertyUpdateWithoutUnitsInput, PropertyUncheckedUpdateWithoutUnitsInput>
+    create: XOR<PropertyCreateWithoutUnitsInput, PropertyUncheckedCreateWithoutUnitsInput>
+    where?: PropertyWhereInput
+  }
+
+  export type PropertyUpdateToOneWithWhereWithoutUnitsInput = {
+    where?: PropertyWhereInput
+    data: XOR<PropertyUpdateWithoutUnitsInput, PropertyUncheckedUpdateWithoutUnitsInput>
+  }
+
+  export type PropertyUpdateWithoutUnitsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumPropertyTypeFieldUpdateOperationsInput | $Enums.PropertyType
+    stage?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    address?: AddressUpdateOneWithoutPropertyNestedInput
+    PropertyMeta?: PropertyMetaUpdateManyWithoutPropertyNestedInput
+    LookupResult?: LookupResultUpdateManyWithoutPropertyNestedInput
+  }
+
+  export type PropertyUncheckedUpdateWithoutUnitsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumPropertyTypeFieldUpdateOperationsInput | $Enums.PropertyType
+    stage?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    address?: AddressUncheckedUpdateOneWithoutPropertyNestedInput
+    PropertyMeta?: PropertyMetaUncheckedUpdateManyWithoutPropertyNestedInput
     LookupResult?: LookupResultUncheckedUpdateManyWithoutPropertyNestedInput
   }
 
@@ -8093,6 +9966,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     address?: AddressCreateNestedOneWithoutPropertyInput
     PropertyMeta?: PropertyMetaCreateNestedManyWithoutPropertyInput
+    units?: UnitConfigurationCreateNestedManyWithoutPropertyInput
   }
 
   export type PropertyUncheckedCreateWithoutLookupResultInput = {
@@ -8103,6 +9977,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     address?: AddressUncheckedCreateNestedOneWithoutPropertyInput
     PropertyMeta?: PropertyMetaUncheckedCreateNestedManyWithoutPropertyInput
+    units?: UnitConfigurationUncheckedCreateNestedManyWithoutPropertyInput
   }
 
   export type PropertyCreateOrConnectWithoutLookupResultInput = {
@@ -8129,6 +10004,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     address?: AddressUpdateOneWithoutPropertyNestedInput
     PropertyMeta?: PropertyMetaUpdateManyWithoutPropertyNestedInput
+    units?: UnitConfigurationUpdateManyWithoutPropertyNestedInput
   }
 
   export type PropertyUncheckedUpdateWithoutLookupResultInput = {
@@ -8139,6 +10015,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     address?: AddressUncheckedUpdateOneWithoutPropertyNestedInput
     PropertyMeta?: PropertyMetaUncheckedUpdateManyWithoutPropertyNestedInput
+    units?: UnitConfigurationUncheckedUpdateManyWithoutPropertyNestedInput
   }
 
   export type PropertyCreateWithoutAddressInput = {
@@ -8149,6 +10026,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     PropertyMeta?: PropertyMetaCreateNestedManyWithoutPropertyInput
     LookupResult?: LookupResultCreateNestedManyWithoutPropertyInput
+    units?: UnitConfigurationCreateNestedManyWithoutPropertyInput
   }
 
   export type PropertyUncheckedCreateWithoutAddressInput = {
@@ -8159,6 +10037,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     PropertyMeta?: PropertyMetaUncheckedCreateNestedManyWithoutPropertyInput
     LookupResult?: LookupResultUncheckedCreateNestedManyWithoutPropertyInput
+    units?: UnitConfigurationUncheckedCreateNestedManyWithoutPropertyInput
   }
 
   export type PropertyCreateOrConnectWithoutAddressInput = {
@@ -8185,6 +10064,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     PropertyMeta?: PropertyMetaUpdateManyWithoutPropertyNestedInput
     LookupResult?: LookupResultUpdateManyWithoutPropertyNestedInput
+    units?: UnitConfigurationUpdateManyWithoutPropertyNestedInput
   }
 
   export type PropertyUncheckedUpdateWithoutAddressInput = {
@@ -8195,6 +10075,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     PropertyMeta?: PropertyMetaUncheckedUpdateManyWithoutPropertyNestedInput
     LookupResult?: LookupResultUncheckedUpdateManyWithoutPropertyNestedInput
+    units?: UnitConfigurationUncheckedUpdateManyWithoutPropertyNestedInput
   }
 
   export type PropertyMetaCreateManyPropertyInput = {
@@ -8209,6 +10090,17 @@ export namespace Prisma {
     resultType: string
     input?: string | null
     json: JsonNullValueInput | InputJsonValue
+  }
+
+  export type UnitConfigurationCreateManyPropertyInput = {
+    id?: string
+    bedrooms: number
+    bathrooms: number
+    quantity: number
+    rent_avm?: number | null
+    rent_high?: number | null
+    rent_low?: number | null
+    fmr?: number | null
   }
 
   export type PropertyMetaUpdateWithoutPropertyInput = {
@@ -8251,6 +10143,39 @@ export namespace Prisma {
     resultType?: StringFieldUpdateOperationsInput | string
     input?: NullableStringFieldUpdateOperationsInput | string | null
     json?: JsonNullValueInput | InputJsonValue
+  }
+
+  export type UnitConfigurationUpdateWithoutPropertyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    bedrooms?: IntFieldUpdateOperationsInput | number
+    bathrooms?: IntFieldUpdateOperationsInput | number
+    quantity?: IntFieldUpdateOperationsInput | number
+    rent_avm?: NullableIntFieldUpdateOperationsInput | number | null
+    rent_high?: NullableIntFieldUpdateOperationsInput | number | null
+    rent_low?: NullableIntFieldUpdateOperationsInput | number | null
+    fmr?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type UnitConfigurationUncheckedUpdateWithoutPropertyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    bedrooms?: IntFieldUpdateOperationsInput | number
+    bathrooms?: IntFieldUpdateOperationsInput | number
+    quantity?: IntFieldUpdateOperationsInput | number
+    rent_avm?: NullableIntFieldUpdateOperationsInput | number | null
+    rent_high?: NullableIntFieldUpdateOperationsInput | number | null
+    rent_low?: NullableIntFieldUpdateOperationsInput | number | null
+    fmr?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type UnitConfigurationUncheckedUpdateManyWithoutPropertyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    bedrooms?: IntFieldUpdateOperationsInput | number
+    bathrooms?: IntFieldUpdateOperationsInput | number
+    quantity?: IntFieldUpdateOperationsInput | number
+    rent_avm?: NullableIntFieldUpdateOperationsInput | number | null
+    rent_high?: NullableIntFieldUpdateOperationsInput | number | null
+    rent_low?: NullableIntFieldUpdateOperationsInput | number | null
+    fmr?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
 

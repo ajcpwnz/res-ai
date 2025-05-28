@@ -8,6 +8,7 @@ interface ModelConstructor {
 }
 export const models: Record<ModelType, ModelConstructor> = {
   [ModelType.Residential]: ResidentialModel,
+  [ModelType.SingleFamily]: ResidentialModel,
   [ModelType.MultiFamily]: MulifamilyModel
 }
 
