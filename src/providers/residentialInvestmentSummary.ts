@@ -4,6 +4,8 @@ import { formatPercents, formatMoney } from 'utils/number.ts'
 
 const prisma = new PrismaClient()
 
+const MONTHS = 12;
+
 export class ResidentialInvestmentSummaryProvider {
   constructor(private model: any) {}
 

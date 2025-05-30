@@ -124,6 +124,7 @@ exports.Prisma.PropertyScalarFieldEnum = {
   id: 'id',
   type: 'type',
   stage: 'stage',
+  stageCompleted: 'stageCompleted',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };

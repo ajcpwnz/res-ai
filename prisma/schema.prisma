@@ -15,15 +15,16 @@ datasource db {
 }
 
 model Property {
-  id           String              @id @default(cuid())
-  type         PropertyType
-  address      Address?
-  stage        String              @default("")
-  PropertyMeta PropertyMeta[]
-  LookupResult LookupResult[]
-  units        UnitConfiguration[]
-  createdAt    DateTime            @default(now())
-  updatedAt    DateTime            @updatedAt
+  id             String              @id @default(cuid())
+  type           PropertyType
+  address        Address?
+  stage          String              @default("")
+  stageCompleted Boolean             @default(false)
+  PropertyMeta   PropertyMeta[]
+  LookupResult   LookupResult[]
+  units          UnitConfiguration[]
+  createdAt      DateTime            @default(now())
+  updatedAt      DateTime            @updatedAt
 }
 
 model PropertyMeta {

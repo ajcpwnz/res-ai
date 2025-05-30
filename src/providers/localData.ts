@@ -7,8 +7,6 @@ const prisma = new PrismaClient()
 
 const queries = [
   { key: "universityStudentCount", query: `How many students attend universities in `, meta: 'city' },
-  { key: "hospitalEmployeeCount", query: `Number of hospital employees in the area of `, meta: 'zipCode' },
-  { key: "mallVisitorCount", query: `Average annual visitor count for the largest mall in `, meta: 'city' },
   { key: "economicDevelopment", query: `Describe recent economic development trends in ZIP code `, meta: 'zipCode' },
 ];
 
@@ -62,8 +60,7 @@ export class LocalDataProvider extends BaseProvider {
 
     const vacancy = await this.askPerplexity(vacancyPrompt, 'decimal');
 
-
-    const placePrompt = `Take this JSON from google places api. Return JSON with 'size' field containing number of visitors/workers/students depending on place type, and 'info' with a short 1 sentence summary of market data about this place. Either field should be 'N/A' if no information found`
+    const placePrompt = `Take this JSON from google places api. Return JSON with 'size' field containing number of visitors for malls workers for hospitals and students for universities. Its important to not come up with fake numbers like number of hospital patients, and 'info' with a short 1 sentence summary of market data about this place. Either field should be 'N/A' if no information found`
 
     for (const place of places) {
       const fields = JSON.parse(place.json);

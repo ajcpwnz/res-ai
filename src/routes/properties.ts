@@ -170,12 +170,31 @@ router.post(`/:id/process`, async (req, res) => {
       emit(`start_assesment`, { stage: assessment.currentStage, id })
       const data = await assessment.processStage(assessment.currentStage)
 
+      const updated = await prisma.property.update({
+        where: {
+          id: property.id
+        },
+        data: {
+          stageCompleted: true
+        }
+      })
+
       emit(`finish_assesment`, {
-        property,
+        property: {...property, ...updated},
         data,
         stage: assessment.currentStage
       })
+
     } catch (error: any) {
+       await prisma.property.update({
+        where: {
+          id: property.id
+        },
+        data: {
+          stageCompleted: true
+        }
+      })
+
       emit(`fail_assesment`, { error: error.message || 'Unexpected error', id, stage: property.stage })
     }
   })
@@ -202,7 +221,8 @@ router.post(`/:id/advance`, async (req, res) => {
         id: property.id
       },
       data: {
-        stage: assessment.currentStage
+        stage: assessment.currentStage,
+        stageCompleted: false
       },
       include: {
         address: true

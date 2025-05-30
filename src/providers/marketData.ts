@@ -24,7 +24,7 @@ export class MarketDataProvider extends BaseProvider {
     // Fetch list of counties for the state
     const { data: counties } = await hudClient.get(`listCounties/${state}`);
     const lookupCounty = counties.find(
-      (row: any) => row.county_name === county || row.county_name.includes(county)
+      (row: any) => row.county_name.toLocaleLowerCase() === county.toLocaleLowerCase() || row.county_name.toLocaleLowerCase().includes(county.toLocaleLowerCase())
     );
 
     // Fetch FMR data for the matched county

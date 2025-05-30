@@ -1404,6 +1404,7 @@ export namespace Prisma {
     id: string | null
     type: $Enums.PropertyType | null
     stage: string | null
+    stageCompleted: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -1412,6 +1413,7 @@ export namespace Prisma {
     id: string | null
     type: $Enums.PropertyType | null
     stage: string | null
+    stageCompleted: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -1420,6 +1422,7 @@ export namespace Prisma {
     id: number
     type: number
     stage: number
+    stageCompleted: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -1430,6 +1433,7 @@ export namespace Prisma {
     id?: true
     type?: true
     stage?: true
+    stageCompleted?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -1438,6 +1442,7 @@ export namespace Prisma {
     id?: true
     type?: true
     stage?: true
+    stageCompleted?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -1446,6 +1451,7 @@ export namespace Prisma {
     id?: true
     type?: true
     stage?: true
+    stageCompleted?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -1527,6 +1533,7 @@ export namespace Prisma {
     id: string
     type: $Enums.PropertyType
     stage: string
+    stageCompleted: boolean
     createdAt: Date
     updatedAt: Date
     _count: PropertyCountAggregateOutputType | null
@@ -1552,6 +1559,7 @@ export namespace Prisma {
     id?: boolean
     type?: boolean
     stage?: boolean
+    stageCompleted?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     address?: boolean | Property$addressArgs<ExtArgs>
@@ -1565,6 +1573,7 @@ export namespace Prisma {
     id?: boolean
     type?: boolean
     stage?: boolean
+    stageCompleted?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["property"]>
@@ -1573,6 +1582,7 @@ export namespace Prisma {
     id?: boolean
     type?: boolean
     stage?: boolean
+    stageCompleted?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["property"]>
@@ -1581,11 +1591,12 @@ export namespace Prisma {
     id?: boolean
     type?: boolean
     stage?: boolean
+    stageCompleted?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type PropertyOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "type" | "stage" | "createdAt" | "updatedAt", ExtArgs["result"]["property"]>
+  export type PropertyOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "type" | "stage" | "stageCompleted" | "createdAt" | "updatedAt", ExtArgs["result"]["property"]>
   export type PropertyInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     address?: boolean | Property$addressArgs<ExtArgs>
     PropertyMeta?: boolean | Property$PropertyMetaArgs<ExtArgs>
@@ -1608,6 +1619,7 @@ export namespace Prisma {
       id: string
       type: $Enums.PropertyType
       stage: string
+      stageCompleted: boolean
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["property"]>
@@ -2040,6 +2052,7 @@ export namespace Prisma {
     readonly id: FieldRef<"Property", 'String'>
     readonly type: FieldRef<"Property", 'PropertyType'>
     readonly stage: FieldRef<"Property", 'String'>
+    readonly stageCompleted: FieldRef<"Property", 'Boolean'>
     readonly createdAt: FieldRef<"Property", 'DateTime'>
     readonly updatedAt: FieldRef<"Property", 'DateTime'>
   }
@@ -7817,6 +7830,7 @@ export namespace Prisma {
     id: 'id',
     type: 'type',
     stage: 'stage',
+    stageCompleted: 'stageCompleted',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -7960,6 +7974,13 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Boolean'
+   */
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+  /**
    * Reference to a field of type 'DateTime'
    */
   export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
@@ -8025,6 +8046,7 @@ export namespace Prisma {
     id?: StringFilter<"Property"> | string
     type?: EnumPropertyTypeFilter<"Property"> | $Enums.PropertyType
     stage?: StringFilter<"Property"> | string
+    stageCompleted?: BoolFilter<"Property"> | boolean
     createdAt?: DateTimeFilter<"Property"> | Date | string
     updatedAt?: DateTimeFilter<"Property"> | Date | string
     address?: XOR<AddressNullableScalarRelationFilter, AddressWhereInput> | null
@@ -8037,6 +8059,7 @@ export namespace Prisma {
     id?: SortOrder
     type?: SortOrder
     stage?: SortOrder
+    stageCompleted?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     address?: AddressOrderByWithRelationInput
@@ -8052,6 +8075,7 @@ export namespace Prisma {
     NOT?: PropertyWhereInput | PropertyWhereInput[]
     type?: EnumPropertyTypeFilter<"Property"> | $Enums.PropertyType
     stage?: StringFilter<"Property"> | string
+    stageCompleted?: BoolFilter<"Property"> | boolean
     createdAt?: DateTimeFilter<"Property"> | Date | string
     updatedAt?: DateTimeFilter<"Property"> | Date | string
     address?: XOR<AddressNullableScalarRelationFilter, AddressWhereInput> | null
@@ -8064,6 +8088,7 @@ export namespace Prisma {
     id?: SortOrder
     type?: SortOrder
     stage?: SortOrder
+    stageCompleted?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: PropertyCountOrderByAggregateInput
@@ -8078,6 +8103,7 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Property"> | string
     type?: EnumPropertyTypeWithAggregatesFilter<"Property"> | $Enums.PropertyType
     stage?: StringWithAggregatesFilter<"Property"> | string
+    stageCompleted?: BoolWithAggregatesFilter<"Property"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"Property"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Property"> | Date | string
   }
@@ -8357,6 +8383,7 @@ export namespace Prisma {
     id?: string
     type: $Enums.PropertyType
     stage?: string
+    stageCompleted?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     address?: AddressCreateNestedOneWithoutPropertyInput
@@ -8369,6 +8396,7 @@ export namespace Prisma {
     id?: string
     type: $Enums.PropertyType
     stage?: string
+    stageCompleted?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     address?: AddressUncheckedCreateNestedOneWithoutPropertyInput
@@ -8381,6 +8409,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     type?: EnumPropertyTypeFieldUpdateOperationsInput | $Enums.PropertyType
     stage?: StringFieldUpdateOperationsInput | string
+    stageCompleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     address?: AddressUpdateOneWithoutPropertyNestedInput
@@ -8393,6 +8422,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     type?: EnumPropertyTypeFieldUpdateOperationsInput | $Enums.PropertyType
     stage?: StringFieldUpdateOperationsInput | string
+    stageCompleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     address?: AddressUncheckedUpdateOneWithoutPropertyNestedInput
@@ -8405,6 +8435,7 @@ export namespace Prisma {
     id?: string
     type: $Enums.PropertyType
     stage?: string
+    stageCompleted?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -8413,6 +8444,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     type?: EnumPropertyTypeFieldUpdateOperationsInput | $Enums.PropertyType
     stage?: StringFieldUpdateOperationsInput | string
+    stageCompleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -8421,6 +8453,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     type?: EnumPropertyTypeFieldUpdateOperationsInput | $Enums.PropertyType
     stage?: StringFieldUpdateOperationsInput | string
+    stageCompleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -8716,6 +8749,11 @@ export namespace Prisma {
     not?: NestedEnumPropertyTypeFilter<$PrismaModel> | $Enums.PropertyType
   }
 
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
   export type DateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -8766,6 +8804,7 @@ export namespace Prisma {
     id?: SortOrder
     type?: SortOrder
     stage?: SortOrder
+    stageCompleted?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -8774,6 +8813,7 @@ export namespace Prisma {
     id?: SortOrder
     type?: SortOrder
     stage?: SortOrder
+    stageCompleted?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -8782,6 +8822,7 @@ export namespace Prisma {
     id?: SortOrder
     type?: SortOrder
     stage?: SortOrder
+    stageCompleted?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -8812,6 +8853,14 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumPropertyTypeFilter<$PrismaModel>
     _max?: NestedEnumPropertyTypeFilter<$PrismaModel>
+  }
+
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
@@ -9227,6 +9276,10 @@ export namespace Prisma {
     set?: $Enums.PropertyType
   }
 
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
+  }
+
   export type DateTimeFieldUpdateOperationsInput = {
     set?: Date | string
   }
@@ -9432,6 +9485,11 @@ export namespace Prisma {
     not?: NestedEnumPropertyTypeFilter<$PrismaModel> | $Enums.PropertyType
   }
 
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
   export type NestedDateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -9479,6 +9537,14 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumPropertyTypeFilter<$PrismaModel>
     _max?: NestedEnumPropertyTypeFilter<$PrismaModel>
+  }
+
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
@@ -9842,6 +9908,7 @@ export namespace Prisma {
     id?: string
     type: $Enums.PropertyType
     stage?: string
+    stageCompleted?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     address?: AddressCreateNestedOneWithoutPropertyInput
@@ -9853,6 +9920,7 @@ export namespace Prisma {
     id?: string
     type: $Enums.PropertyType
     stage?: string
+    stageCompleted?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     address?: AddressUncheckedCreateNestedOneWithoutPropertyInput
@@ -9880,6 +9948,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     type?: EnumPropertyTypeFieldUpdateOperationsInput | $Enums.PropertyType
     stage?: StringFieldUpdateOperationsInput | string
+    stageCompleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     address?: AddressUpdateOneWithoutPropertyNestedInput
@@ -9891,6 +9960,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     type?: EnumPropertyTypeFieldUpdateOperationsInput | $Enums.PropertyType
     stage?: StringFieldUpdateOperationsInput | string
+    stageCompleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     address?: AddressUncheckedUpdateOneWithoutPropertyNestedInput
@@ -9902,6 +9972,7 @@ export namespace Prisma {
     id?: string
     type: $Enums.PropertyType
     stage?: string
+    stageCompleted?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     address?: AddressCreateNestedOneWithoutPropertyInput
@@ -9913,6 +9984,7 @@ export namespace Prisma {
     id?: string
     type: $Enums.PropertyType
     stage?: string
+    stageCompleted?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     address?: AddressUncheckedCreateNestedOneWithoutPropertyInput
@@ -9940,6 +10012,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     type?: EnumPropertyTypeFieldUpdateOperationsInput | $Enums.PropertyType
     stage?: StringFieldUpdateOperationsInput | string
+    stageCompleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     address?: AddressUpdateOneWithoutPropertyNestedInput
@@ -9951,6 +10024,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     type?: EnumPropertyTypeFieldUpdateOperationsInput | $Enums.PropertyType
     stage?: StringFieldUpdateOperationsInput | string
+    stageCompleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     address?: AddressUncheckedUpdateOneWithoutPropertyNestedInput
@@ -9962,6 +10036,7 @@ export namespace Prisma {
     id?: string
     type: $Enums.PropertyType
     stage?: string
+    stageCompleted?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     address?: AddressCreateNestedOneWithoutPropertyInput
@@ -9973,6 +10048,7 @@ export namespace Prisma {
     id?: string
     type: $Enums.PropertyType
     stage?: string
+    stageCompleted?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     address?: AddressUncheckedCreateNestedOneWithoutPropertyInput
@@ -10000,6 +10076,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     type?: EnumPropertyTypeFieldUpdateOperationsInput | $Enums.PropertyType
     stage?: StringFieldUpdateOperationsInput | string
+    stageCompleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     address?: AddressUpdateOneWithoutPropertyNestedInput
@@ -10011,6 +10088,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     type?: EnumPropertyTypeFieldUpdateOperationsInput | $Enums.PropertyType
     stage?: StringFieldUpdateOperationsInput | string
+    stageCompleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     address?: AddressUncheckedUpdateOneWithoutPropertyNestedInput
@@ -10022,6 +10100,7 @@ export namespace Prisma {
     id?: string
     type: $Enums.PropertyType
     stage?: string
+    stageCompleted?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     PropertyMeta?: PropertyMetaCreateNestedManyWithoutPropertyInput
@@ -10033,6 +10112,7 @@ export namespace Prisma {
     id?: string
     type: $Enums.PropertyType
     stage?: string
+    stageCompleted?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     PropertyMeta?: PropertyMetaUncheckedCreateNestedManyWithoutPropertyInput
@@ -10060,6 +10140,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     type?: EnumPropertyTypeFieldUpdateOperationsInput | $Enums.PropertyType
     stage?: StringFieldUpdateOperationsInput | string
+    stageCompleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     PropertyMeta?: PropertyMetaUpdateManyWithoutPropertyNestedInput
@@ -10071,6 +10152,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     type?: EnumPropertyTypeFieldUpdateOperationsInput | $Enums.PropertyType
     stage?: StringFieldUpdateOperationsInput | string
+    stageCompleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     PropertyMeta?: PropertyMetaUncheckedUpdateManyWithoutPropertyNestedInput

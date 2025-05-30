@@ -1,3 +1,4 @@
+import { BaseModel } from 'models/base.ts'
 import { PrismaClient } from 'prisma'
 import { emit } from '../sockets'
 import { loadProperty } from 'utils/db.ts'
@@ -54,7 +55,7 @@ const defaultStages = {
 
 const defaultStage = 'stage_1'
 
-export class MulifamilyModel implements ModelAssesment {
+export class MulifamilyModel extends BaseModel {
   static defaultStage = defaultStage
 
   done = false
@@ -74,6 +75,7 @@ export class MulifamilyModel implements ModelAssesment {
   meta: Record<string, any> = {}
 
   constructor(property: PropertyDetails) {
+    super()
     this.order = Object.keys(this.stages)
     this.property = property
     this.currentStage = property.stage || defaultStage
@@ -85,68 +87,6 @@ export class MulifamilyModel implements ModelAssesment {
 
   reload = async () => {
     this.property = await loadProperty(this.property.id)
-  }
-
-  processStage = async (stage: StageKey) => {
-    const stageConfig = this.stages[stage]
-
-    if (!stageConfig) {
-      return
-    }
-
-    console.warn(`] processing stage '${stage}'`)
-
-    const result: Record<string, any> = {}
-
-    for (const dataSource of stageConfig.outputs) {
-      const Provider = providers[dataSource]
-
-      if (!Provider) {
-        console.warn(`Provider '${dataSource}' not found`)
-        continue
-      }
-
-      const provider = new Provider(this)
-
-      result[dataSource] = await provider.getData()
-
-      emit('provider_data_received', {
-        id: this.property.id,
-        stage: this.currentStage,
-        dataSource,
-        data: result[dataSource]
-      })
-    }
-
-    return result
-  }
-
-
-  advanceStage = async () => {
-    const stage = this.currentStage
-
-    const stageConfig = this.stages[stage]
-    const currentIndex = this.order.indexOf(stage)
-
-    if (this.order[currentIndex + 1] !== undefined) {
-      this.currentStage = this.order[currentIndex + 1]!
-    }
-
-    if (stageConfig.final) {
-      this.done = true
-    }
-  }
-
-  rewindStage = async () => {
-    const stage = this.currentStage
-
-    const currentIndex = this.order.indexOf(stage)
-
-    if (this.order[currentIndex - 1] !== undefined) {
-      this.currentStage = this.order[currentIndex - 1]!
-    } else {
-      this.currentStage = defaultStage
-    }
   }
 
   loadState = async () => {
