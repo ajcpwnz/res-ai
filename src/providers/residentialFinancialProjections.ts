@@ -1,11 +1,7 @@
-import { BaseProvider } from 'providers/base.ts'
-import { PrismaClient } from 'prisma'
-import { saveLookupResults } from 'utils/db.ts'
+import { BaseProvider } from 'providers/base'
+import { prisma, saveLookupResults } from 'utils/db'
 
 const MONTHS = 12
-
-const prisma = new PrismaClient()
-
 
 export class FinancialProjectionsProvider extends BaseProvider {
 

@@ -1,8 +1,7 @@
 import PDFDocument from 'pdfkit'
-import { PrismaClient } from 'prisma'
+import { prisma } from 'utils/db.ts'
 import { formatPercents, formatMoney } from 'utils/number.ts'
 
-const prisma = new PrismaClient()
 
 const MONTHS = 12;
 

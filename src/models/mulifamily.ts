@@ -1,19 +1,13 @@
-import { BaseModel } from 'models/base.ts'
-import { PrismaClient } from 'prisma'
-import { emit } from '../sockets'
-import { loadProperty } from 'utils/db.ts'
+import { BaseModel } from 'models/base'
+import { loadProperty, prisma } from 'utils/db'
 import { DataSource, providers } from '../providers'
 import {
-  type ModelAssesment,
   type ModelAssesmentStage,
   ModelType,
   type PropertyDetails,
   type StageKey
 } from '../models/types'
 
-import { PrismaClient } from 'prisma'
-
-const prisma = new PrismaClient()
 
 const defaultStages = {
   stage_1: {
@@ -158,12 +152,12 @@ export class MulifamilyModel extends BaseModel {
       },
       stage_3: {
         [DataSource.DerivedMultifamilyExpenseRatio]: {
-          expense_rate:               meta?.expense_rate,
-          expense_rate_type:          meta?.expense_rate_type,
-          income_growth:              meta?.income_growth,
-          expense_growth:             meta?.expense_growth,
-          renovation_scope:           meta?.renovation_scope,
-          renovation_cost:            meta?.renovation_cost,
+          expense_rate: meta?.expense_rate,
+          expense_rate_type: meta?.expense_rate_type,
+          income_growth: meta?.income_growth,
+          expense_growth: meta?.expense_growth,
+          renovation_scope: meta?.renovation_scope,
+          renovation_cost: meta?.renovation_cost,
           renovation_units_per_month: meta?.renovation_units_per_month,
           avg_rent: meta?.avg_rent,
           vacancy: meta?.vacancy,
@@ -187,7 +181,6 @@ export class MulifamilyModel extends BaseModel {
       allowedStages.map(stage => [stage, allStates[stage]])
     ) as Record<StageKey, any>
   }
-
 
 
   getReport = () => {

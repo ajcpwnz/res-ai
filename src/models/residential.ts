@@ -1,6 +1,5 @@
 import { BaseModel } from 'models/base.ts'
-import { PrismaClient } from 'prisma'
-import { loadProperty } from 'utils/db.ts'
+import { loadProperty, prisma } from 'utils/db.ts'
 import { DataSource } from '../providers'
 import {
   type ModelAssesmentStage,
@@ -9,7 +8,6 @@ import {
   type StageKey
 } from '../models/types'
 
-const prisma = new PrismaClient()
 
 const defaultStages = {
   stage_1: {

@@ -1,7 +1,9 @@
 import { json } from 'express'
 import { PrismaClient } from 'prisma'
 
-const prisma = new PrismaClient()
+export const prisma = new PrismaClient({
+  log: ['query', 'info', 'warn', 'error'],
+});
 
 export const createPropertyMeta = async (propertyId: string, key: string, value: any, json?: any) => {
   return prisma.propertyMeta.upsert({

@@ -1,9 +1,7 @@
 import PDFDocument from 'pdfkit'
-import { BaseProvider } from 'providers/base.ts'
-import { PrismaClient } from 'prisma'
+import { prisma } from 'utils/db'
 import { formatPercents, formatMoney } from 'utils/number.ts'
 
-const prisma = new PrismaClient()
 
 export class MultifamilyInvestmentSummaryProvider {
   constructor(private model: any) {}

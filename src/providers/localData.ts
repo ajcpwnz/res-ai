@@ -1,9 +1,6 @@
 import axios from 'axios'
-import { PrismaClient } from 'prisma'
 import { BaseProvider } from 'providers/base'
-import { createPropertyMeta, getLookupData, saveLookupResult } from 'utils/db'
-
-const prisma = new PrismaClient()
+import { createPropertyMeta, getLookupData, prisma, saveLookupResult } from 'utils/db'
 
 const queries = [
   { key: "universityStudentCount", query: `How many students attend universities in `, meta: 'city' },
