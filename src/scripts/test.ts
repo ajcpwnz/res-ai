@@ -1,5 +1,5 @@
 import { matchModel } from 'models/index.ts'
-import { loadProperty } from 'utils/db.ts'
+import { loadProperty } from 'utils/db'
 import dotenv from 'dotenv'
 
 dotenv.config()

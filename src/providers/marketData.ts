@@ -1,7 +1,7 @@
 import { BaseProvider } from 'providers/base';
 import { rentcastClient } from 'utils/api/rentcast.ts';
 import { hudClient } from 'utils/api/hud.ts';
-import { saveLookupResults, updateUnitConfig, getLookupData } from 'utils/db.ts';
+import { saveLookupResults, updateUnitConfig, getLookupData } from 'utils/db';
 
 const lookupKeys: Record<number | 'default', string> = {
   default: 'One-Bedroom',

@@ -1,5 +1,5 @@
 import { BaseModel } from 'models/base.ts'
-import { loadProperty, prisma } from 'utils/db.ts'
+import { loadProperty, prisma } from 'utils/db'
 import { DataSource } from '../providers'
 import {
   type ModelAssesmentStage,

@@ -1,6 +1,6 @@
 import { BaseProvider } from 'providers/base.ts'
 import { hudClient } from 'utils/api/hud.ts'
-import { createPropertyMeta, getLookupData } from 'utils/db.ts'
+import { createPropertyMeta, getLookupData } from 'utils/db'
 
 const lookupKeys = {
   default: 'One-Bedroom',

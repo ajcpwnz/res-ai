@@ -1,9 +1,10 @@
 import { Router, text } from 'express'
 import { matchModel } from 'models/index.ts'
+import { createProperty } from 'utils/db/properties.ts'
 import { openai } from 'utils/oai.ts'
 import { jobQueue } from '../queues'
 import { emit } from '../sockets'
-import { createPropertyMeta, loadProperty, prisma } from 'utils/db.ts'
+import { createPropertyMetas, loadProperty, prisma } from 'utils/db'
 import multer from 'multer'
 
 const pdfParse = require('pdf-parse')
@@ -33,36 +34,15 @@ router.post('/', async (req, res) => {
   const {
     type,
     address,
-    last_sold_date,
-    last_sold_price,
     units,
   } = req.body
 
   try {
-    const Model = matchModel(type)
-
-    const createPayload = {
-      data: {
-        type,
-        stage: Model.defaultStage,
-        address: {
-          create: { fullAddress: address },
-        },
-      },
-      units: {
-        create: units.map((u: any) => ({
-          bedrooms: u.bedrooms,
-          bathrooms: u.bathrooms,
-          quantity: u.quantity,
-        }))
-      },
-      include: {
-        address: true,
-        units: true,
-      },
-    }
-
-    const property = await prisma.property.create(createPayload)
+    const property = await createProperty({
+      type,
+      address,
+      units
+    })
 
     return res.json({ property })
   } catch (error) {
@@ -76,11 +56,9 @@ router.put('/:id', async (req, res) => {
   const { id } = req.params
   const { units, update_units, ...metas } = req.body
 
+
   try {
-    for (const [key, value] of Object.entries(metas)) {
-      if (value == null || value === '') continue
-      await createPropertyMeta(id, key, value)
-    }
+    await createPropertyMetas(id, metas);
 
 
     if (update_units?.length) {
@@ -314,7 +292,7 @@ router.post(
     const configPrompt = `
 You are an expert document parser. Extract the following JSON fields from the text:
 {
-  "fullAddress": The full address of the property, in the format of Street, City, State, Zip, string,
+  "address": The full address of the property, in the format of Street, City, State, Zip, string,
   "type": 'SingleFamily' if 1 unit, 'Residential' if 2-4 units, 'MultiFamily' if more than 4,
   "units": an array of unit breakdown, shaped like this: {"bathrooms": number, "bedrooms": number, "quantity": number}. For SingleFamily it will have one entry.
   "square_footage": number,
@@ -406,8 +384,14 @@ Begin:
         })
       }
 
-      // 15. Return the parsed JSON back to the client
-      return res.json({ json: parsedJson })
+      const {
+        address, type, units, ...metas
+      } = parsedJson
+
+      const property = await createProperty({ address, units, type }, { stageCompleted: true })
+      await createPropertyMetas(property.id, metas);
+
+      return res.json({ property, metas });
     } catch (openaiErr: any) {
       console.error('OpenAI API error:', openaiErr)
       return res.status(500).json({ error: 'OpenAI API request failed.' })

@@ -1,4 +1,4 @@
-import { loadProperty } from 'utils/db.ts'
+import { loadProperty } from 'utils/db'
 import { models } from './src/models'
 import dotenv from "dotenv";
 

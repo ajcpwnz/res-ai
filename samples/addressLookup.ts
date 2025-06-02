@@ -100,6 +100,8 @@ export interface AddressLookupResult {
   features: Features
   taxAssessments: Record<string, TaxAssessment>
   propertyTaxes: Record<string, PropertyTax>
+  lastSaleDate: Date,
+  lastSalePrice: number,
   owner: Owner
   ownerOccupied: boolean
 }

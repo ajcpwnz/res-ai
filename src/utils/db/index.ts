@@ -1,4 +1,3 @@
-import { json } from 'express'
 import { PrismaClient } from 'prisma'
 
 export const prisma = new PrismaClient({
@@ -21,6 +20,38 @@ export const createPropertyMeta = async (propertyId: string, key: string, value:
       json: json ?? undefined,
     },
   })
+}
+
+
+export const createPropertyMetas = async (
+  propertyId: string,
+  metas: Record<string, any>
+): Promise<any[]> => {
+  const operations = Object.entries(metas)
+    .filter(([, value]) => value != null && value !== '')
+    .map(([key, value]) =>
+      prisma.propertyMeta.upsert({
+        where: {
+          propertyId_key: { propertyId, key },
+        },
+        create: {
+          propertyId,
+          key,
+          value: `${value}`,
+          json: null,
+        },
+        update: {
+          value: `${value}`,
+          json: undefined,
+        },
+      })
+    )
+
+  if (operations.length === 0) {
+    return []
+  }
+
+  return prisma.$transaction(operations)
 }
 
 

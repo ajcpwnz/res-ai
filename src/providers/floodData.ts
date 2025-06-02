@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { BaseProvider } from 'providers/base'
-import { createPropertyMeta } from 'utils/db.ts'
+import { createPropertyMeta } from 'utils/db'
 
 const API_KEY = 'vF1MTfIpId1XTt76Sf9Mi7ujqJSGOLEB5VWCDCj9'
 const CLIENT_ID = '1qf8bipffjjske57m64o3fb5rt'

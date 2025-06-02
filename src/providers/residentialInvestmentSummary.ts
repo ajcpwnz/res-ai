@@ -1,5 +1,5 @@
 import PDFDocument from 'pdfkit'
-import { prisma } from 'utils/db.ts'
+import { prisma } from 'utils/db'
 import { formatPercents, formatMoney } from 'utils/number.ts'
 
 

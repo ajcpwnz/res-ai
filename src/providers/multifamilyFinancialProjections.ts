@@ -1,5 +1,5 @@
 import { BaseProvider } from 'providers/base.ts'
-import { saveLookupResults } from 'utils/db.ts'
+import { saveLookupResults } from 'utils/db'
 
 const MONTHS = 12
 

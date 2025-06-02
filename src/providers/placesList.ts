@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { BaseProvider } from 'providers/base'
-import { getLookupData, saveLookupResult, saveLookupResults } from 'utils/db.ts'
+import { getLookupData, saveLookupResult, saveLookupResults } from 'utils/db'
 
 const placesClient = axios.create({
   baseURL: 'https://places.googleapis.com/v1',

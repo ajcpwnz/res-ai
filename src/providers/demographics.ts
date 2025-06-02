@@ -1,6 +1,6 @@
 import { BaseProvider } from 'providers/base'
 import { censusClient } from 'utils/api/census.ts'
-import { getLookupData, saveLookupResult } from 'utils/db.ts'
+import { getLookupData, saveLookupResult } from 'utils/db'
 
 enum CensusDataSet {
   totalPopulation = 'B01003_001E',

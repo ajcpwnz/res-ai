@@ -1,6 +1,6 @@
 import { BaseProvider } from 'providers/base'
 import { rentcastClient } from 'utils/api/rentcast.ts'
-import { createPropertyMeta, saveLookupResults } from 'utils/db.ts'
+import { createPropertyMeta, saveLookupResults } from 'utils/db'
 
 export class SalesCompProvider extends BaseProvider {
   getData = async () => {

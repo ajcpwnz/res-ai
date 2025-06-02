@@ -71,7 +71,7 @@ export class AddressLookupProvider extends BaseProvider {
 
       const assesment = Object.values(data.taxAssessments || {}).pop()
       const propertyTax = Object.values(data.propertyTaxes || {}).pop()
-
+  console.warn('dsdsdsds', data)
       // console.warn('Valuation data', valuationData)
       const metas: Record<string, any> = {
         rentcast_property_type: data.propertyType,
@@ -83,6 +83,8 @@ export class AddressLookupProvider extends BaseProvider {
         assessed_value: assesment?.value,
         annual_property_tax: propertyTax?.total,
         zip_code: data.zipCode,
+        last_sold_date: data.lastSaleDate,
+        last_sold_price: data.lastSalePrice,
         unit_count: data.features?.unitCount || meta.unit_count || 1,
       }
 
