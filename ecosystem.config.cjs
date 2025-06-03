@@ -18,11 +18,11 @@ module.exports = {
       host: "67.205.183.132",
       ref: "origin/master",
       repo: "git@github.com:ajcpwnz/res-ai.git",
-      path: "/root/res‑ai",
+      path: "/root/res‑ai-back",
       keep_releases: 0,
 
       "post-deploy": `
-        cd /root/res‑ai &&
+        cd /root/res‑ai-back &&
         bun install &&
         pm2 reload ecosystem.config.js --env production
       `
