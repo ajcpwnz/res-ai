@@ -2,7 +2,7 @@ module.exports = {
   apps: [
     {
       name: "res-ai",
-      cwd: "/root/res‑ai",
+      cwd: "/root/res-ai",
       script: "bun",
       args: "run dev",
       watch: false,
@@ -18,9 +18,8 @@ module.exports = {
       host: "67.205.183.132",
       ref: "origin/master",
       repo: "git@github.com:ajcpwnz/res-ai.git",
-      path: "/root/res‑ai-back",
+      path: "/root/res-ai",
       keep_releases: 0,
-
       "post-deploy": `pm2 start all`
     }
   }
