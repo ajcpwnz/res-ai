@@ -24,7 +24,7 @@ module.exports = {
       "post-deploy": `
         cd /root/res‑ai-back &&
         bun install &&
-        pm2 reload ecosystem.config.js --env production
+        pm2 start all
       `
     }
   }
