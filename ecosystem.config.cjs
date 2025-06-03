@@ -2,7 +2,7 @@ module.exports = {
   apps: [
     {
       name: "res-ai",
-      cwd: "/root/res-ai",
+      cwd: "/root/res-ai/current",
       script: "bun",
       args: "run dev",
       watch: false,
