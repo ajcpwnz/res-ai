@@ -20,7 +20,7 @@ module.exports = {
       repo: "git@github.com:ajcpwnz/res-ai.git",
       path: "/root/res-ai",
       keep_releases: 0,
-      "post-deploy": "/bin/bun install && pm2 start ecosystem.config.cjs"
+      "post-deploy": "/root/.bun/bin/bun install && pm2 start ecosystem.config.cjs"
     }
   }
 };
