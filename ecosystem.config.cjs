@@ -24,9 +24,9 @@ module.exports = {
         export NVM_DIR="$HOME/.nvm" &&
         [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" &&
 
-        cd /root/res-ai-back/current &&
+        cd /root/res-ai/current &&
         npm install &&
-        pm2 reload ecosystem.config.js --env production
+        pm2 start ecosystem.config.js --env dev
       `
     }
   }
