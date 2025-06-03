@@ -20,14 +20,7 @@ module.exports = {
       repo: "git@github.com:ajcpwnz/res-ai.git",
       path: "/root/res-ai",
       keep_releases: 0,
-      "post-deploy": `
-        export NVM_DIR="$HOME/.nvm" &&
-        [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" &&
-
-        cd /root/res-ai/current &&
-        bun install &&
-        pm2 start ecosystem.config.cjs --env dev
-      `
+      "post-deploy": "pwd"
     }
   }
 };
