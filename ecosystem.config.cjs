@@ -21,11 +21,7 @@ module.exports = {
       path: "/root/res‑ai-back",
       keep_releases: 0,
 
-      "post-deploy": `
-        cd /root/res‑ai-back &&
-        bun install &&
-        pm2 start all
-      `
+      "post-deploy": `pm2 start all`
     }
   }
 };
