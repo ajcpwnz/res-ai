@@ -3,7 +3,7 @@ module.exports = {
     {
       name: "res-ai",
       cwd: "/root/res-ai/current",
-      script: "bun",
+      interpreter: "bun",
       args: "run dev",
       watch: false
     },
