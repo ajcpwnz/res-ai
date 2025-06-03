@@ -5,11 +5,8 @@ module.exports = {
       cwd: "/root/res-ai/current",
       script: "bun",
       args: "run dev",
-      watch: false,
-      env_production: {
-        NODE_ENV: "production"
-      }
-    }
+      watch: false
+    },
   ],
 
   deploy: {
