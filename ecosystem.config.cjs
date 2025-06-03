@@ -20,7 +20,12 @@ module.exports = {
       repo: "git@github.com:ajcpwnz/res-ai.git",
       path: "/root/res-ai",
       keep_releases: 0,
-      "post-deploy": `pm2 start all`
+      "post-deploy": `
+  cd /root/res-ai/current &&
+  npm install &&
+  /root/.nvm/versions/node/v22.16.0/bin/pm2 reload ecosystem.config.js --env production
+`
+
     }
   }
 };
