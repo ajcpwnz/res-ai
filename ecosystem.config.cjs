@@ -4,7 +4,7 @@ module.exports = {
       name: "res-ai",
       cwd: "/root/res-ai/current",
       interpreter: "bun",
-      args: "run dev",
+      script: "index.ts",
       watch: false
     },
   ],
