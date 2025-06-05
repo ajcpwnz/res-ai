@@ -1,5 +1,6 @@
 import { Router, text } from 'express'
 import { matchModel } from 'models/index.ts'
+import { passport } from 'utils/auth/passport.ts'
 import { createProperty } from 'utils/db/properties.ts'
 import { openai } from 'utils/oai.ts'
 import { jobQueue } from '../queues'
@@ -12,101 +13,168 @@ import openaiTokenCounter from 'openai-gpt-token-counter'
 
 const router = Router()
 
-router.get('/', async (req, res) => {
-  const properties = await prisma.property.findMany({
-    where: {},
-    include: {
-      address: true
-    }
-  })
-
-  res.json({ properties })
-})
-
-router.get('/:id', async (req, res) => {
-  const { id } = req.params
-
-  const property = await loadProperty(id)
-  res.json({ property })
-})
-
-router.post('/', async (req, res) => {
-  const {
-    type,
-    address,
-    units,
-  } = req.body
-
-  try {
-    const property = await createProperty({
-      type,
-      address,
-      units
+router.get(
+  '/',
+  passport.authenticate('jwt', { session: false }),
+  async (req, res) => {
+    const properties = await prisma.property.findMany({
+      where: {
+        userId: req.user.id,
+      },
+      include: {
+        address: true
+      }
     })
 
-    return res.json({ property })
-  } catch (error) {
-    console.error(error)
-    return res.status(500).json({ error: 'Could not create property' })
+    res.json({ properties })
   }
-})
+)
 
+router.get(
+  '/:id',
+  passport.authenticate('jwt', { session: false }),
+  async (req, res) => {
+    const { id } = req.params
 
-router.put('/:id', async (req, res) => {
-  const { id } = req.params
-  const { units, update_units, ...metas } = req.body
-
-
-  try {
-    await createPropertyMetas(id, metas);
-
-
-    if (update_units?.length) {
-      const updates = update_units.map((u: any) => {
-        const { id: unitId, ...data } = u
-        return prisma.unitConfiguration.update({
-          where: { id: unitId },
-          data,
-        })
-      })
-
-      await prisma.$transaction(updates)
-    } else if (Array.isArray(units)) {
-      await prisma.unitConfiguration.deleteMany({
-        where: { propertyId: id }
-      })
-
-      if (units.length > 0) {
-        await prisma.unitConfiguration.createMany({
-          data: units.map((u: any) => ({
-            propertyId: id,
-            bedrooms: u.bedrooms,
-            bathrooms: u.bathrooms,
-            quantity: u.quantity,
-          }))
-        })
-      }
-    }
-
-    return res.status(200).json({ success: true })
-  } catch (error) {
-    console.error(error)
-    return res.status(500).json({ error: 'Could not update property' })
-  }
-})
-
-
-router.post(`/:id/process`, async (req, res) => {
-  const { id } = req.params
-
-  // Respond immediately to client
-  res.json({ status: 'queued', propertyId: id })
-
-
-  jobQueue.add(async () => {
     const property = await loadProperty(id)
+    res.json({ property })
+  }
+)
+
+router.post(
+  '/',
+  passport.authenticate('jwt', { session: false }),
+  async (req, res) => {
+    const {
+      type,
+      address,
+      units,
+    } = req.body;
+    const {id: userId} = req.user;
 
     try {
+      const property = await createProperty({
+        type,
+        address,
+        units,
+        userId
+      })
+
+      return res.json({ property })
+    } catch (error) {
+      console.error(error)
+      return res.status(500).json({ error: 'Could not create property' })
+    }
+  }
+)
+
+router.put(
+  '/:id',
+  passport.authenticate('jwt', { session: false }),
+  async (req, res) => {
+    const { id } = req.params
+    const { units, update_units, ...metas } = req.body
+
+    try {
+      await createPropertyMetas(id, metas);
+
+      if (update_units?.length) {
+        const updates = update_units.map((u: any) => {
+          const { id: unitId, ...data } = u
+          return prisma.unitConfiguration.update({
+            where: { id: unitId },
+            data,
+          })
+        })
+
+        await prisma.$transaction(updates)
+      } else if (Array.isArray(units)) {
+        await prisma.unitConfiguration.deleteMany({
+          where: { propertyId: id }
+        })
+
+        if (units.length > 0) {
+          await prisma.unitConfiguration.createMany({
+            data: units.map((u: any) => ({
+              propertyId: id,
+              bedrooms: u.bedrooms,
+              bathrooms: u.bathrooms,
+              quantity: u.quantity,
+            }))
+          })
+        }
+      }
+
+      return res.status(200).json({ success: true })
+    } catch (error) {
+      console.error(error)
+      return res.status(500).json({ error: 'Could not update property' })
+    }
+  }
+)
+
+router.post(
+  '/:id/process',
+  passport.authenticate('jwt', { session: false }),
+  async (req, res) => {
+    const { id } = req.params
+
+    // Respond immediately to client
+    res.json({ status: 'queued', propertyId: id })
+
+    jobQueue.add(async () => {
+      const property = await loadProperty(id)
+
+      try {
+        if (!property) {
+          emit(`fail_assesment`, { error: 'Property not found', id })
+          return
+        }
+
+        const Model = matchModel(property.type)
+        const assessment = new Model(property)
+
+        emit(`start_assesment`, { stage: assessment.currentStage, id })
+        const data = await assessment.processStage(assessment.currentStage)
+
+        const updated = await prisma.property.update({
+          where: {
+            id: property.id
+          },
+          data: {
+            stageCompleted: true
+          }
+        })
+
+        emit(`finish_assesment`, {
+          property: { ...property, ...updated },
+          data,
+          stage: assessment.currentStage
+        })
+      } catch (error: any) {
+        await prisma.property.update({
+          where: {
+            id: property.id
+          },
+          data: {
+            stageCompleted: true
+          }
+        })
+
+        emit(`fail_assesment`, { error: error.message || 'Unexpected error', id, stage: property.stage })
+      }
+    })
+  }
+)
+
+router.post(
+  '/:id/advance',
+  passport.authenticate('jwt', { session: false }),
+  async (req, res) => {
+    const { id } = req.params
+
+    try {
+      const property = await loadProperty(id)
       if (!property) {
         emit(`fail_assesment`, { error: 'Property not found', id })
         return
@@ -115,148 +183,115 @@ router.post(`/:id/process`, async (req, res) => {
       const Model = matchModel(property.type)
       const assessment = new Model(property)
 
-      emit(`start_assesment`, { stage: assessment.currentStage, id })
-      const data = await assessment.processStage(assessment.currentStage)
+      const data = await assessment.advanceStage()
 
       const updated = await prisma.property.update({
         where: {
           id: property.id
         },
         data: {
-          stageCompleted: true
+          stage: assessment.currentStage,
+          stageCompleted: false
+        },
+        include: {
+          address: true
         }
       })
 
-      emit(`finish_assesment`, {
-        property: { ...property, ...updated },
-        data,
-        stage: assessment.currentStage
-      })
-
+      res.json(updated)
     } catch (error: any) {
-      await prisma.property.update({
+      res.status(404).send()
+    }
+  }
+)
+
+router.post(
+  '/:id/rewind',
+  passport.authenticate('jwt', { session: false }),
+  async (req, res) => {
+    const { id } = req.params
+
+    try {
+      const property = await loadProperty(id)
+      if (!property) {
+        emit(`fail_assesment`, { error: 'Property not found', id })
+        return
+      }
+
+      const Model = matchModel(property.type)
+      const assessment = new Model(property)
+
+      await assessment.rewindStage()
+
+      const updated = await prisma.property.update({
         where: {
           id: property.id
         },
         data: {
-          stageCompleted: true
+          stage: assessment.currentStage
+        },
+        include: {
+          address: true
         }
       })
 
-      emit(`fail_assesment`, { error: error.message || 'Unexpected error', id, stage: property.stage })
+      res.json(updated)
+    } catch (error: any) {
+      res.status(404).send()
     }
-  })
-})
+  }
+)
 
-
-router.post(`/:id/advance`, async (req, res) => {
-  const { id } = req.params
-
-  try {
+router.post(
+  '/:id/assesment',
+  passport.authenticate('jwt', { session: false }),
+  async (req, res) => {
+    const { id } = req.params
     const property = await loadProperty(id)
-    if (!property) {
-      emit(`fail_assesment`, { error: 'Property not found', id })
-      return
-    }
-
     const Model = matchModel(property.type)
     const assessment = new Model(property)
 
-    const data = await assessment.advanceStage()
+    const state = await assessment.loadState()
 
-    const updated = await prisma.property.update({
-      where: {
-        id: property.id
-      },
-      data: {
-        stage: assessment.currentStage,
-        stageCompleted: false
-      },
-      include: {
-        address: true
-      }
-    })
-
-
-    res.json(updated)
-  } catch (error: any) {
-    res.status(404).send()
+    return res.json(state)
   }
-})
+)
 
-router.post(`/:id/rewind`, async (req, res) => {
-  const { id } = req.params
-
-  try {
-    const property = await loadProperty(id)
-    if (!property) {
-      emit(`fail_assesment`, { error: 'Property not found', id })
-      return
+router.delete(
+  '/:id',
+  passport.authenticate('jwt', { session: false }),
+  async (req, res) => {
+    const { id } = req.params
+    try {
+      await prisma.lookupResult.deleteMany({ where: { propertyId: id } })
+      await prisma.propertyMeta.deleteMany({ where: { propertyId: id } })
+      await prisma.address.deleteMany({ where: { propertyId: id } })
+      await prisma.property.delete({ where: { id } })
+      res.status(200).json({ success: true })
+    } catch (error: any) {
+      res.status(500).json({ error: error.message })
     }
+  }
+)
 
+router.get(
+  '/:id/report',
+  passport.authenticate('jwt', { session: false }),
+  async (req, res) => {
+    const { id } = req.params
+    const property = await loadProperty(id)
     const Model = matchModel(property.type)
     const assessment = new Model(property)
 
-    await assessment.rewindStage()
-
-    const updated = await prisma.property.update({
-      where: {
-        id: property.id
-      },
-      data: {
-        stage: assessment.currentStage
-      },
-      include: {
-        address: true
-      }
+    const pdfBuffer = await assessment.getReport()
+    res.set({
+      'Content-Type': 'application/pdf',
+      'Content-Disposition': `attachment; filename="Assessment - ${property.address?.fullAddress}.pdf"`,
+      'Content-Length': pdfBuffer.length
     })
-
-
-    res.json(updated)
-  } catch (error: any) {
-    res.status(404).send()
+    res.status(200).end(pdfBuffer)
   }
-})
-
-
-router.post('/:id/assesment', async (req, res) => {
-  const { id } = req.params
-  const property = await loadProperty(id)
-  const Model = matchModel(property.type)
-  const assessment = new Model(property)
-
-  const state = await assessment.loadState()
-
-  return res.json(state)
-})
-
-router.delete('/:id', async (req, res) => {
-  const { id } = req.params
-  try {
-    await prisma.lookupResult.deleteMany({ where: { propertyId: id } })
-    await prisma.propertyMeta.deleteMany({ where: { propertyId: id } })
-    await prisma.address.deleteMany({ where: { propertyId: id } })
-    await prisma.property.delete({ where: { id } })
-    res.status(200).json({ success: true })
-  } catch (error: any) {
-    res.status(500).json({ error: error.message })
-  }
-})
-
-router.get('/:id/report', async (req, res) => {
-  const { id } = req.params
-  const property = await loadProperty(id)
-  const Model = matchModel(property.type)
-  const assessment = new Model(property)
-
-  const pdfBuffer = await assessment.getReport()
-  res.set({
-    'Content-Type': 'application/pdf',
-    'Content-Disposition': `attachment; filename="Assessment - ${property.address?.fullAddress}.pdf"`,
-    'Content-Length': pdfBuffer.length
-  })
-  res.status(200).end(pdfBuffer)
-})
+)
 
 const upload = multer({
   storage: multer.memoryStorage(),
@@ -267,6 +302,7 @@ const upload = multer({
 
 router.post(
   '/parse',
+  passport.authenticate('jwt', { session: false }),
   upload.single('file'),
   async (req, res) => {
     // 1. Make sure a file was uploaded
@@ -388,7 +424,9 @@ Begin:
         address, type, units, ...metas
       } = parsedJson
 
-      const property = await createProperty({ address, units, type }, { stageCompleted: true })
+      const {id: userId} = req.user;
+
+      const property = await createProperty({ address, units, type, userId }, { stageCompleted: true })
       await createPropertyMetas(property.id, metas);
 
       return res.json({ property, metas });

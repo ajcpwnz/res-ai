@@ -14,6 +14,16 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id         String     @id @default(cuid())
+  username   String
+  email      String     @unique
+  password   String
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  properties Property[]
+}
+
 model Property {
   id             String              @id @default(cuid())
   type           PropertyType
@@ -23,8 +33,10 @@ model Property {
   PropertyMeta   PropertyMeta[]
   LookupResult   LookupResult[]
   units          UnitConfiguration[]
+  userId         String
   createdAt      DateTime            @default(now())
   updatedAt      DateTime            @updatedAt
+  User           User                @relation(fields: [userId], references: [id])
 }
 
 model PropertyMeta {

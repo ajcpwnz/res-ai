@@ -8,7 +8,9 @@ export const createProperty = (
     address,
     type,
     units,
+    userId,
   }: {
+    userId: string
     address: string
     units: UnitConfiguration[]
     type: ModelType
@@ -22,6 +24,7 @@ export const createProperty = (
       type,
       stage: Model.defaultStage,
       ...overrides,
+      userId,
       address: {
         create: { fullAddress: address },
       },
