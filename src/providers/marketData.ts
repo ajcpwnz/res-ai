@@ -47,7 +47,9 @@ export class MarketDataProvider extends BaseProvider {
         : [fmrResult.data.basicdata];
 
       // Match ZIP code
-      fmrEntry = basicData.find((row: any) => row.zip_code === zipCode) || null;
+      fmrEntry = Array.isArray(fmrResult.data.basicdata)
+        ? basicData.find((row: any) => row.zip_code === zipCode) || null
+        : fmrResult.data.basicdata
     }
 
     const units: any[] = [];
