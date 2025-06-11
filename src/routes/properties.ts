@@ -1,15 +1,16 @@
-import { Router, text } from 'express'
+import { Router } from 'express'
 import { matchModel } from 'models/index.ts'
+import { ModelType } from 'models/types'
+import multer from 'multer'
+import openaiTokenCounter from 'openai-gpt-token-counter'
 import { passport } from 'utils/auth/passport.ts'
+import { createPropertyMetas, loadProperty, prisma } from 'utils/db'
 import { createProperty } from 'utils/db/properties.ts'
 import { openai } from 'utils/oai.ts'
 import { jobQueue } from '../queues'
 import { emit } from '../sockets'
-import { createPropertyMetas, loadProperty, prisma } from 'utils/db'
-import multer from 'multer'
 
 const pdfParse = require('pdf-parse')
-import openaiTokenCounter from 'openai-gpt-token-counter'
 
 const router = Router()
 
@@ -45,18 +46,14 @@ router.post(
   '/',
   passport.authenticate('jwt', { session: false }),
   async (req, res) => {
-    const {
-      type,
-      address,
-      units,
-    } = req.body;
-    const {id: userId} = req.user;
+    const { address } = req.body;
+
+    const { id: userId } = req.user
 
     try {
       const property = await createProperty({
-        type,
+        type: ModelType.SingleFamily,
         address,
-        units,
         userId
       })
 
@@ -76,7 +73,7 @@ router.put(
     const { units, update_units, ...metas } = req.body
 
     try {
-      await createPropertyMetas(id, metas);
+      await createPropertyMetas(id, metas)
 
       if (update_units?.length) {
         const updates = update_units.map((u: any) => {
@@ -424,12 +421,12 @@ Begin:
         address, type, units, ...metas
       } = parsedJson
 
-      const {id: userId} = req.user;
+      const { id: userId } = req.user
 
       const property = await createProperty({ address, units, type, userId }, { stageCompleted: true })
-      await createPropertyMetas(property.id, metas);
+      await createPropertyMetas(property.id, metas)
 
-      return res.json({ property, metas });
+      return res.json({ property, metas })
     } catch (openaiErr: any) {
       console.error('OpenAI API error:', openaiErr)
       return res.status(500).json({ error: 'OpenAI API request failed.' })

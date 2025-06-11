@@ -1,0 +1,99 @@
+{
+  "stage_1": {
+    "rentcast_property_type": "Residential",
+    "square_footage": 1728,
+    "lot_size_sqft": 4743,
+    "year_built": 1916,
+    "assessed_value": 270400,
+    "annual_property_tax": null,
+    "zip_code": "08638",
+    "last_sold_date": "2002",
+    "last_sold_price": null,
+    "unit_count": 2,
+    "units": [
+      {
+        "bedrooms": 2,
+        "bathrooms": 1,
+        "quantity": 1
+      },
+      {
+        "bedrooms": 2,
+        "bathrooms": 1,
+        "quantity": 1
+      }
+    ]
+  },
+  "stage_2": {
+    "rent_data": [
+      {
+        "min": 1400,
+        "median": 1600,
+        "max": 1800,
+        "hud_fmr": 1608,
+        "rent_comparables": [
+          {
+            "address": "141 Miller St, Trenton, NJ 08638",
+            "rent": 1500
+          },
+          {
+            "address": "123 Oak St, Trenton, NJ 08638",
+            "rent": 1650
+          },
+          {
+            "address": "25 Ewing St, Trenton, NJ 08638",
+            "rent": 1750
+          }
+        ]
+      },
+      {
+        "min": 1400,
+        "median": 1600,
+        "max": 1800,
+        "hud_fmr": 1608,
+        "rent_comparables": [
+          {
+            "address": "141 Miller St, Trenton, NJ 08638",
+            "rent": 1500
+          },
+          {
+            "address": "123 Oak St, Trenton, NJ 08638",
+            "rent": 1650
+          },
+          {
+            "address": "25 Ewing St, Trenton, NJ 08638",
+            "rent": 1750
+          }
+        ]
+      }
+    ],
+    "sale_data": {
+      "avm_value": 270400,
+      "sales_comps": [
+        {
+          "address": "141 Miller St, Trenton, NJ 08638",
+          "price": 200000,
+          "beds": 2,
+          "baths": 1,
+          "sqft": 1209
+        },
+        {
+          "address": "35 N Overbrook Ave, Trenton, NJ 08638",
+          "price": 220000,
+          "beds": 3,
+          "baths": 1,
+          "sqft": 1400
+        }
+      ]
+    },
+    "flood_zone": "Zone X (Minimal Flood Hazard)",
+    "demographics": {
+      "totalPopulation": 8430,
+      "whitePopulation": "960 | 11.4%",
+      "latinoPopulation": "4072 | 48.3%",
+      "blackPopulation": "3021 | 35.8%",
+      "medianIncome": 38500,
+      "housingUnits": 3240,
+      "renterUnits": "2300 | 71%"
+    }
+  }
+}

@@ -28,13 +28,13 @@ export const createProperty = (
       address: {
         create: { fullAddress: address },
       },
-      units: {
+      units: units ? {
         create: units.map((u: any) => ({
           bedrooms: u.bedrooms,
           bathrooms: u.bathrooms,
           quantity: u.quantity,
         })),
-      },
+      } : undefined,
     },
     include: {
       address: true,

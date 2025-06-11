@@ -1,0 +1,62 @@
+{
+  "stage_1": {
+    "rentcast_property_type": "MultiFamily",
+    "square_footage": null,
+    "lot_size_sqft": null,
+    "year_built": null,
+    "assessed_value": null,
+    "annual_property_tax": null,
+    "zip_code": 23518,
+    "last_sold_date": null,
+    "last_sold_price": null,
+    "unit_count": 3,
+    "units": [
+      {
+        "bedrooms": 1,
+        "bathrooms": 1,
+        "quantity": 1
+      },
+      {
+        "bedrooms": 2,
+        "bathrooms": 1,
+        "quantity": 2
+      }
+    ]
+  },
+  "stage_2": {
+    "rent_data": [
+      {
+        "bedrooms": 1,
+        "bathrooms": 1,
+        "min_rent": 900,
+        "median_rent": 950,
+        "max_rent": 1000,
+        "hud_fmr": null,
+        "comparables": ["1524 Longdale Dr, Unit 1, Norfolk, VA 23518"]
+      },
+      {
+        "bedrooms": 2,
+        "bathrooms": 1,
+        "min_rent": 1150,
+        "median_rent": 1150,
+        "max_rent": 1150,
+        "hud_fmr": null,
+        "comparables": ["1524 Longdale Dr #203, Norfolk, VA 23518"]
+      }
+    ],
+    "sale_data": {
+      "avm_value": null,
+      "sales_comps": []
+    },
+    "flood_zone": null,
+    "demographics": {
+      "totalPopulation": null,
+      "whitePopulation": null,
+      "latinoPopulation": null,
+      "blackPopulation": null,
+      "medianIncome": null,
+      "housingUnits": null,
+      "renterUnits": null
+    }
+  }
+}

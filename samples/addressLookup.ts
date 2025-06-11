@@ -76,7 +76,7 @@ const addressLookupSample = {
   ownerOccupied: true,
 }
 
-export interface AddressLookupResult {
+export interface xAddressLookupResult {
   id: string
   formattedAddress: string
   addressLine1: string

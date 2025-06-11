@@ -37,7 +37,11 @@ export class DemographicsProvider extends BaseProvider {
   }
 
   private parseLookupResult = (key: CensusDataSet) => {
-    return this.lookupResults[key]?.[1][1] ? Number(this.lookupResults[key]?.[1][1]) : null
+    try {
+      return this.lookupResults[key]?.[1][1] ? Number(this.lookupResults[key]?.[1][1]) : null
+    } catch {
+      return null;
+    }
   }
 
   getData = async () => {

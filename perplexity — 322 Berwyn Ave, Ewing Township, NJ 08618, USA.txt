@@ -1,0 +1,103 @@
+{
+  "stage_1": {
+    "rentcast_property_type": "Residential",
+    "square_footage": 1695,
+    "lot_size_sqft": null,
+    "year_built": 1915,
+    "assessed_value": null,
+    "annual_property_tax": null,
+    "zip_code": "08618",
+    "last_sold_date": null,
+    "last_sold_price": null,
+    "unit_count": 2,
+    "units": [
+      {
+        "bedrooms": 2,
+        "bathrooms": 1,
+        "quantity": 1
+      },
+      {
+        "bedrooms": 1,
+        "bathrooms": 1,
+        "quantity": 1
+      }
+    ]
+  },
+  "stage_2": {
+    "rent_data": [
+      {
+        "min": 1400,
+        "median": 1550,
+        "max": 1700,
+        "hud_fmr": 1530,
+        "comps": [
+          {
+            "address": "218 Myrtle Ave, Ewing, NJ 08618",
+            "rent": 1500
+          },
+          {
+            "address": "135 Stratford Ave, Ewing, NJ 08618",
+            "rent": 1600
+          },
+          {
+            "address": "59 Homecrest Ave, Ewing, NJ 08618",
+            "rent": 1650
+          }
+        ]
+      },
+      {
+        "min": 1100,
+        "median": 1275,
+        "max": 1400,
+        "hud_fmr": 1214,
+        "comps": [
+          {
+            "address": "151 Berwyn Ave, Ewing, NJ 08618",
+            "rent": 1300
+          },
+          {
+            "address": "133 Hazel Ave, Ewing, NJ 08618",
+            "rent": 1250
+          },
+          {
+            "address": "70 Miles Ave, Ewing, NJ 08618",
+            "rent": 1350
+          }
+        ]
+      }
+    ],
+    "sale_data": {
+      "avm_value": 401500,
+      "sales_comps": [
+        {
+          "address": "318 Berwyn Ave, Ewing, NJ 08618",
+          "sale_price": 388000,
+          "sale_date": "2024-11-16",
+          "sqft": 1710
+        },
+        {
+          "address": "313 Homecrest Ave, Ewing, NJ 08618",
+          "sale_price": 405000,
+          "sale_date": "2025-01-29",
+          "sqft": 1660
+        },
+        {
+          "address": "127 Stratford Ave, Ewing, NJ 08618",
+          "sale_price": 410000,
+          "sale_date": "2024-08-03",
+          "sqft": 1740
+        }
+      ]
+    },
+    "flood_zone": "Zone X (minimal flood hazard)",
+    "demographics": {
+      "totalPopulation": 37590,
+      "whitePopulation": "15867 | 42.2%",
+      "latinoPopulation": "5687 | 15.1%",
+      "blackPopulation": "15618 | 41.5%",
+      "medianIncome": 66995,
+      "housingUnits": 14670,
+      "renterUnits": "6135 | 41.8%"
+    }
+  }
+}

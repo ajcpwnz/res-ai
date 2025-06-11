@@ -19,7 +19,8 @@ export class MarketDataProvider extends BaseProvider {
 
     // Fetch HUD lookup details once
     const lookupDetails = await getLookupData(property.id, 'address_lookup');
-    const { state, county, zipCode } = lookupDetails;
+    const { state, county } = lookupDetails;
+    const { zip_code } = meta;
 
     // Fetch list of counties for the state
     const { data: counties } = await hudClient.get(`listCounties/${state}`);
@@ -48,7 +49,7 @@ export class MarketDataProvider extends BaseProvider {
 
       // Match ZIP code
       fmrEntry = Array.isArray(fmrResult.data.basicdata)
-        ? basicData.find((row: any) => row.zip_code === zipCode) || null
+        ? basicData.find((row: any) => row.zip_code === zip_code) || null
         : fmrResult.data.basicdata
     }
 
@@ -73,6 +74,7 @@ export class MarketDataProvider extends BaseProvider {
         .slice(0, 2) || [];
 
       let fmrValue: number | undefined;
+
       if (fmrEntry) {
         const key = lookupKeys[unitConfig.bedrooms] || lookupKeys.default;
         fmrValue = fmrEntry[key];

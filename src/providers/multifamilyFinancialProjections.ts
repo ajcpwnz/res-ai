@@ -21,11 +21,9 @@ export class MultifamilyFinancialProjectionsProvider extends BaseProvider {
     const address = property.address.fullAddress
     const { meta, units } = property
 
-    console.warn('dd', units)
     const combined = units.reduce(
       (acc: NOIValues, unit: { quantity: number; rent_avm: number }) => {
         const { EGI, expenses, NOI } = this.getNOIValues(unit.rent_avm)
-        console.warn('dddddd', unit, EGI, expenses, NOI);
 
         return {
           EGI: acc.EGI + EGI * unit.quantity,
